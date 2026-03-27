@@ -1,0 +1,29 @@
+# Build results
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# NuGet
+*.nupkg
+project.lock.json
+packages/
+
+# Environment
+.env
+.env.local
+appsettings.Development.json
+
+# Node
+node_modules/
+dist/
+.next/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

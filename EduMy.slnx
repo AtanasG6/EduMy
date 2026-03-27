@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EduMy.Api/EduMy.Api.csproj" />
+    <Project Path="src/EduMy.Application/EduMy.Application.csproj" />
+    <Project Path="src/EduMy.Domain/EduMy.Domain.csproj" />
+    <Project Path="src/EduMy.Infrastructure/EduMy.Infrastructure.csproj" />
+  </Folder>
+</Solution>
