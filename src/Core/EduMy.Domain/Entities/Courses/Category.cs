@@ -1,6 +1,6 @@
 using EduMy.Domain.Common;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Courses;
 
 public class Category : BaseDeletableEntity<int>
 {

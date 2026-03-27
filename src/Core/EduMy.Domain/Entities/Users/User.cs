@@ -1,7 +1,10 @@
 using EduMy.Domain.Common;
+using EduMy.Domain.Entities.Courses;
+using EduMy.Domain.Entities.Enrollments;
+using EduMy.Domain.Entities.Reviews;
 using EduMy.Domain.Enums;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Users;
 
 public class User : BaseDeletableEntity<int>
 {

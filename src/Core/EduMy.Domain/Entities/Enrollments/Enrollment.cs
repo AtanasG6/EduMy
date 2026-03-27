@@ -1,6 +1,10 @@
 using EduMy.Domain.Common;
+using EduMy.Domain.Entities.Courses;
+using EduMy.Domain.Entities.Payments;
+using EduMy.Domain.Entities.Quizzes;
+using EduMy.Domain.Entities.Users;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Enrollments;
 
 public class Enrollment : BaseEntity<int>
 {

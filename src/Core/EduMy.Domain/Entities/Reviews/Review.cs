@@ -1,6 +1,8 @@
 using EduMy.Domain.Common;
+using EduMy.Domain.Entities.Courses;
+using EduMy.Domain.Entities.Users;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Reviews;
 
 public class Review : BaseDeletableEntity<int>
 {

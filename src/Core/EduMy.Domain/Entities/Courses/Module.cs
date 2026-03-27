@@ -1,6 +1,7 @@
 using EduMy.Domain.Common;
+using EduMy.Domain.Entities.Quizzes;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Courses;
 
 public class Module : BaseEntity<int>
 {

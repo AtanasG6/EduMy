@@ -1,7 +1,8 @@
 using EduMy.Domain.Common;
+using EduMy.Domain.Entities.Enrollments;
 using EduMy.Domain.Enums;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Payments;
 
 public class Payment : BaseEntity<int>
 {

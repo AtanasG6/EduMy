@@ -1,7 +1,7 @@
 using EduMy.Domain.Common;
 using EduMy.Domain.Enums;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Quizzes;
 
 public class Question : BaseEntity<int>
 {

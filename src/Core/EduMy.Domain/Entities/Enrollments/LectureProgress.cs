@@ -1,6 +1,7 @@
 using EduMy.Domain.Common;
+using EduMy.Domain.Entities.Courses;
 
-namespace EduMy.Domain.Entities;
+namespace EduMy.Domain.Entities.Enrollments;
 
 public class LectureProgress : BaseEntity<int>
 {
