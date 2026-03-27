@@ -1,4 +1,5 @@
 using EduMy.Application.Repositories;
+using EduMy.Application.Services.Diplomas.Interfaces;
 using EduMy.Application.Services.Auth.Implementations;
 using EduMy.Application.Services.Auth.Interfaces;
 using EduMy.Application.Services.Courses.Implementations;
@@ -47,6 +48,12 @@ public static class DependencyInjection
         services.AddScoped<IReviewService, ReviewService>();
         services.AddScoped<IQuizService, QuizService>();
         services.AddScoped<IPaymentService, PaymentService>();
+
+        services.AddHttpClient<IDiplomaVerificationService, OllamaVerificationService>(client =>
+        {
+            client.BaseAddress = new Uri("http://localhost:11434/");
+            client.Timeout = TimeSpan.FromSeconds(120);
+        });
 
         return services;
     }
