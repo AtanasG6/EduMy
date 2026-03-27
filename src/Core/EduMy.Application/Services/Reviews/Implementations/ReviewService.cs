@@ -1,10 +1,11 @@
+using EduMy.Application.Services.Reviews.Interfaces;
 using EduMy.Application.Common;
 using EduMy.Application.Repositories;
 using EduMy.Application.Services.Reviews.DTOs;
 using EduMy.Domain.Entities.Enrollments;
 using EduMy.Domain.Entities.Reviews;
 
-namespace EduMy.Application.Services.Reviews;
+namespace EduMy.Application.Services.Reviews.Implementations;
 
 public class ReviewService : IReviewService
 {

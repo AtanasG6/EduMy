@@ -1,7 +1,7 @@
 using EduMy.Application.Common;
 using EduMy.Application.Services.Auth.DTOs;
 
-namespace EduMy.Application.Services.Auth;
+namespace EduMy.Application.Services.Auth.Interfaces;
 
 public interface IAuthService
 {

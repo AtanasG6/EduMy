@@ -1,10 +1,11 @@
+using EduMy.Application.Services.Courses.Interfaces;
 using EduMy.Application.Common;
 using EduMy.Application.Repositories;
 using EduMy.Application.Services.Courses.DTOs;
 using EduMy.Domain.Entities.Courses;
 using EduMy.Domain.Enums;
 
-namespace EduMy.Application.Services.Courses;
+namespace EduMy.Application.Services.Courses.Implementations;
 
 public class CourseService : ICourseService
 {

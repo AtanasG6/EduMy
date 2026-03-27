@@ -1,7 +1,7 @@
 using EduMy.Application.Common;
 using EduMy.Application.Services.Users.DTOs;
 
-namespace EduMy.Application.Services.Users;
+namespace EduMy.Application.Services.Users.Interfaces;
 
 public interface IUserService
 {

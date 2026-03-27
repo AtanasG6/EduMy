@@ -1,4 +1,4 @@
-using EduMy.Application.Services.Quizzes;
+using EduMy.Application.Services.Quizzes.Interfaces;
 using EduMy.Application.Services.Quizzes.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

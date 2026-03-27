@@ -1,7 +1,7 @@
 using EduMy.Application.Common;
 using EduMy.Application.Services.Courses.DTOs;
 
-namespace EduMy.Application.Services.Courses;
+namespace EduMy.Application.Services.Courses.Interfaces;
 
 public interface IModuleService
 {

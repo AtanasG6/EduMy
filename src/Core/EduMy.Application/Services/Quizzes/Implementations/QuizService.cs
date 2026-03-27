@@ -1,10 +1,11 @@
+using EduMy.Application.Services.Quizzes.Interfaces;
 using EduMy.Application.Common;
 using EduMy.Application.Repositories;
 using EduMy.Application.Services.Quizzes.DTOs;
 using EduMy.Domain.Entities.Enrollments;
 using EduMy.Domain.Entities.Quizzes;
 
-namespace EduMy.Application.Services.Quizzes;
+namespace EduMy.Application.Services.Quizzes.Implementations;
 
 public class QuizService : IQuizService
 {

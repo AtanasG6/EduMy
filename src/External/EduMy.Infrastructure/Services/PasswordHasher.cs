@@ -1,4 +1,4 @@
-using EduMy.Application.Services.Auth;
+using EduMy.Application.Services.Auth.Interfaces;
 
 namespace EduMy.Infrastructure.Services;
 

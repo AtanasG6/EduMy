@@ -1,7 +1,7 @@
 using EduMy.Application.Common;
 using EduMy.Application.Services.Quizzes.DTOs;
 
-namespace EduMy.Application.Services.Quizzes;
+namespace EduMy.Application.Services.Quizzes.Interfaces;
 
 public interface IQuizService
 {

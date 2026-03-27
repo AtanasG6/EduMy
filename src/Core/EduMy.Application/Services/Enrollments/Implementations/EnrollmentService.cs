@@ -1,10 +1,11 @@
+using EduMy.Application.Services.Enrollments.Interfaces;
 using EduMy.Application.Common;
 using EduMy.Application.Repositories;
 using EduMy.Application.Services.Enrollments.DTOs;
 using EduMy.Domain.Entities.Courses;
 using EduMy.Domain.Entities.Enrollments;
 
-namespace EduMy.Application.Services.Enrollments;
+namespace EduMy.Application.Services.Enrollments.Implementations;
 
 public class EnrollmentService : IEnrollmentService
 {

@@ -1,6 +1,6 @@
 using EduMy.Domain.Entities.Users;
 
-namespace EduMy.Application.Services.Auth;
+namespace EduMy.Application.Services.Auth.Interfaces;
 
 public interface IJwtService
 {

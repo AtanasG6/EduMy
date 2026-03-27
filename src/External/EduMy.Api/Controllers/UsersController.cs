@@ -1,4 +1,4 @@
-using EduMy.Application.Services.Users;
+using EduMy.Application.Services.Users.Interfaces;
 using EduMy.Application.Services.Users.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

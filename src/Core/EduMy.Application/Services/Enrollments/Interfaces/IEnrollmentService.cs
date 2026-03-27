@@ -1,7 +1,7 @@
 using EduMy.Application.Common;
 using EduMy.Application.Services.Enrollments.DTOs;
 
-namespace EduMy.Application.Services.Enrollments;
+namespace EduMy.Application.Services.Enrollments.Interfaces;
 
 public interface IEnrollmentService
 {

@@ -1,7 +1,7 @@
 using EduMy.Application.Common;
 using EduMy.Application.Services.Payments.DTOs;
 
-namespace EduMy.Application.Services.Payments;
+namespace EduMy.Application.Services.Payments.Interfaces;
 
 public interface IPaymentService
 {

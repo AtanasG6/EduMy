@@ -1,3 +1,4 @@
+using EduMy.Application.Services.Payments.Interfaces;
 using EduMy.Application.Common;
 using EduMy.Application.Repositories;
 using EduMy.Application.Services.Payments.DTOs;
@@ -5,7 +6,7 @@ using EduMy.Domain.Entities.Enrollments;
 using EduMy.Domain.Entities.Payments;
 using EduMy.Domain.Enums;
 
-namespace EduMy.Application.Services.Payments;
+namespace EduMy.Application.Services.Payments.Implementations;
 
 public class PaymentService : IPaymentService
 {

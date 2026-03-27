@@ -1,10 +1,11 @@
+using EduMy.Application.Services.Auth.Interfaces;
 using EduMy.Application.Common;
 using EduMy.Application.Repositories;
 using EduMy.Application.Services.Auth.DTOs;
 using EduMy.Domain.Entities.Users;
 using EduMy.Domain.Enums;
 
-namespace EduMy.Application.Services.Auth;
+namespace EduMy.Application.Services.Auth.Implementations;
 
 public class AuthService : IAuthService
 {

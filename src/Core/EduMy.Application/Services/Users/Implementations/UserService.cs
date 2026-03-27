@@ -1,10 +1,12 @@
+using EduMy.Application.Services.Auth.Interfaces;
+using EduMy.Application.Services.Users.Interfaces;
 using EduMy.Application.Common;
 using EduMy.Application.Repositories;
 using EduMy.Application.Services.Auth;
 using EduMy.Application.Services.Users.DTOs;
 using EduMy.Domain.Entities.Users;
 
-namespace EduMy.Application.Services.Users;
+namespace EduMy.Application.Services.Users.Implementations;
 
 public class UserService : IUserService
 {

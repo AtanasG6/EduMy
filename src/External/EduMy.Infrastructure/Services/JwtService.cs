@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using EduMy.Application.Services.Auth;
+using EduMy.Application.Services.Auth.Interfaces;
 using EduMy.Domain.Entities.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

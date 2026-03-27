@@ -1,4 +1,4 @@
-using EduMy.Application.Services.Payments;
+using EduMy.Application.Services.Payments.Interfaces;
 using EduMy.Application.Services.Payments.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

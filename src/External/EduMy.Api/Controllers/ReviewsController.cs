@@ -1,4 +1,4 @@
-using EduMy.Application.Services.Reviews;
+using EduMy.Application.Services.Reviews.Interfaces;
 using EduMy.Application.Services.Reviews.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-namespace EduMy.Application.Services.Auth;
+namespace EduMy.Application.Services.Auth.Interfaces;
 
 public interface IPasswordHasher
 {
