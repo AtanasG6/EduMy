@@ -19,8 +19,19 @@ export default function Navbar() {
 
         {user ? (
           <>
-            <Link to="/dashboard" className="text-gray-600 hover:text-indigo-600">My Learning</Link>
-            <span className="text-gray-400">{user.firstName}</span>
+            {user.role === 'Student' && (
+              <Link to="/dashboard" className="text-gray-600 hover:text-indigo-600">My Learning</Link>
+            )}
+            {user.role === 'Lecturer' && (
+              <Link to="/my-courses" className="text-gray-600 hover:text-indigo-600">My Courses</Link>
+            )}
+            {user.role === 'Admin' && (
+              <>
+                <Link to="/admin/users" className="text-gray-600 hover:text-indigo-600">Users</Link>
+                <Link to="/admin/categories" className="text-gray-600 hover:text-indigo-600">Categories</Link>
+              </>
+            )}
+            <Link to="/profile" className="text-gray-600 hover:text-indigo-600">{user.firstName}</Link>
             <button
               onClick={handleLogout}
               className="bg-indigo-600 text-white px-4 py-1.5 rounded-md hover:bg-indigo-700"
