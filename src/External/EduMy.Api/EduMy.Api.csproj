@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\EduMy.Infrastructure\EduMy.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Core\EduMy.Application\EduMy.Application.csproj" />
   </ItemGroup>
