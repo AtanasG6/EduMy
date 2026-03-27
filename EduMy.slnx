@@ -1,8 +1,11 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="src/EduMy.Api/EduMy.Api.csproj" />
-    <Project Path="src/EduMy.Application/EduMy.Application.csproj" />
-    <Project Path="src/EduMy.Domain/EduMy.Domain.csproj" />
-    <Project Path="src/EduMy.Infrastructure/EduMy.Infrastructure.csproj" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/EduMy.Application/EduMy.Application.csproj" />
+    <Project Path="src/Core/EduMy.Domain/EduMy.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/External/">
+    <Project Path="src/External/EduMy.Api/EduMy.Api.csproj" />
+    <Project Path="src/External/EduMy.Infrastructure/EduMy.Infrastructure.csproj" />
   </Folder>
 </Solution>

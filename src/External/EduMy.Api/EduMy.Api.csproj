@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EduMy.Infrastructure\EduMy.Infrastructure.csproj" />
-    <ProjectReference Include="..\EduMy.Application\EduMy.Application.csproj" />
+    <ProjectReference Include="..\..\Core\EduMy.Application\EduMy.Application.csproj" />
   </ItemGroup>
 
 </Project>
