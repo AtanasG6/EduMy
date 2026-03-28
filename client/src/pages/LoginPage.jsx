@@ -85,9 +85,24 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <p className="mt-5 text-center text-xs text-gray-400">
-          Demo — admin@edumy.com / Admin123! &nbsp;·&nbsp; student@edumy.com / Student123!
-        </p>
+        <div className="mt-5 flex flex-col gap-2">
+          {[
+            { label: 'Admin', email: 'admin@edumy.com', pass: 'Admin123!', cls: 'border-rose-100 bg-rose-50 hover:border-rose-300', badge: 'text-rose-600 bg-rose-100' },
+            { label: 'Lecturer', email: 'lecturer@edumy.com', pass: 'Lecturer123!', cls: 'border-violet-100 bg-violet-50 hover:border-violet-300', badge: 'text-violet-600 bg-violet-100' },
+            { label: 'Student', email: 'student@edumy.com', pass: 'Student123!', cls: 'border-indigo-100 bg-indigo-50 hover:border-indigo-300', badge: 'text-indigo-600 bg-indigo-100' },
+          ].map(({ label, email, pass, cls, badge }) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => setForm({ email, password: pass })}
+              className={`w-full flex items-center gap-3 rounded-lg border px-4 py-2.5 text-left transition-colors ${cls}`}
+            >
+              <span className={`shrink-0 text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5 w-16 text-center ${badge}`}>
+                {label}
+              </span>
+              <span className="text-xs text-gray-500 font-mono">{email}</span>
+            </button>
+          ))}</div>
       </div>
     </div>
   )
