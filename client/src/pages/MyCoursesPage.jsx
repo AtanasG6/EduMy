@@ -1,19 +1,20 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api'
-import { Icon, faGraduationCap, faPlus, faPen, faTrash } from '../icons'
+import { Icon, faPlus, faPen, faTrash, faArrowRight, faUsers, faGraduationCap } from '../icons'
 import ConfirmModal from '../ConfirmModal'
+import CourseThumbnail from '../CourseThumbnail'
 
-const STATUS_COLORS = {
-  Published: 'bg-green-100 text-green-700',
-  Draft: 'bg-yellow-100 text-yellow-700',
-  Archived: 'bg-gray-100 text-gray-500',
+const STATUS_BADGE = {
+  Published: 'bg-green-50 text-green-700 border-green-100',
+  Draft: 'bg-amber-50 text-amber-700 border-amber-100',
+  Archived: 'bg-gray-100 text-gray-500 border-gray-200',
 }
 
 export default function MyCoursesPage() {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
-  const [confirm, setConfirm] = useState(null) // { courseId, title }
+  const [confirm, setConfirm] = useState(null)
   const [confirmLoading, setConfirmLoading] = useState(false)
 
   useEffect(() => {
@@ -41,26 +42,25 @@ export default function MyCoursesPage() {
     try {
       await api.post(`/courses/${id}/publish`)
       setCourses(courses.map(c => c.id === id ? { ...c, status: 'Published' } : c))
-    } catch {
-      // ignore
-    }
+    } catch { /* ignore */ }
   }
 
   async function handleArchive(id) {
     try {
       await api.post(`/courses/${id}/archive`)
       setCourses(courses.map(c => c.id === id ? { ...c, status: 'Archived' } : c))
-    } catch {
-      // ignore
-    }
+    } catch { /* ignore */ }
   }
 
+  const published = courses.filter(c => c.status === 'Published').length
+  const drafts = courses.filter(c => c.status === 'Draft').length
+
   return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
+    <div className="bg-white min-h-screen">
       {confirm && (
         <ConfirmModal
           title="Delete course"
-          message={`Delete "${confirm.title}"? This will also remove all modules, lectures, and enrollments.`}
+          message={`Delete "${confirm.title}"? All modules, lectures, and enrollments will be removed.`}
           confirmLabel="Delete"
           loading={confirmLoading}
           onConfirm={handleDelete}
@@ -68,82 +68,113 @@ export default function MyCoursesPage() {
         />
       )}
 
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">My Courses</h1>
-        <Link
-          to="/my-courses/new"
-          className="flex items-center gap-2 rounded-xl bg-indigo-600 text-white px-5 py-2.5 text-sm font-semibold hover:bg-indigo-500 transition-colors"
-        >
-          <Icon icon={faPlus} />
-          New course
-        </Link>
-      </div>
-
-      {loading ? (
-        <div className="space-y-3">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 animate-pulse h-16" />
-          ))}
-        </div>
-      ) : courses.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
-          <Icon icon={faGraduationCap} className="text-5xl text-indigo-300 mb-4" />
-          <p className="text-gray-500 mb-5">You haven't created any courses yet.</p>
+      <div className="border-b border-gray-100 px-6 py-10">
+        <div className="max-w-5xl mx-auto flex items-end justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1.5">Lecturer</p>
+            <h1 className="text-4xl font-black tracking-tight text-gray-950">My Courses</h1>
+            {courses.length > 0 && (
+              <p className="text-sm text-gray-400 mt-1">
+                {published} published · {drafts} draft{drafts !== 1 ? 's' : ''}
+              </p>
+            )}
+          </div>
           <Link
             to="/my-courses/new"
-            className="inline-block rounded-xl bg-indigo-600 text-white px-6 py-2.5 text-sm font-semibold hover:bg-indigo-500"
+            className="inline-flex items-center gap-2 rounded-xl bg-gray-950 text-white px-5 py-2.5 text-sm font-bold hover:bg-gray-800 transition-colors"
           >
-            Create your first course
+            <Icon icon={faPlus} className="text-xs" />
+            New course
           </Link>
         </div>
-      ) : (
-        <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-xs uppercase text-gray-400 tracking-wide">
-              <tr>
-                <th className="px-5 py-3.5 text-left">Title</th>
-                <th className="px-5 py-3.5 text-left">Status</th>
-                <th className="px-5 py-3.5 text-left">Students</th>
-                <th className="px-5 py-3.5 text-left">Price</th>
-                <th className="px-5 py-3.5 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {courses.map(course => (
-                <tr key={course.id} className="hover:bg-gray-50">
-                  <td className="px-5 py-4 font-medium text-gray-900">{course.title}</td>
-                  <td className="px-5 py-4">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[course.status] ?? 'bg-gray-100 text-gray-500'}`}>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="border border-gray-100 rounded-2xl overflow-hidden animate-pulse">
+                <div className="h-32 bg-gray-100" />
+                <div className="p-5 space-y-2.5">
+                  <div className="h-4 bg-gray-100 rounded-full w-3/4" />
+                  <div className="h-3 bg-gray-100 rounded-full w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : courses.length === 0 ? (
+          <div className="text-center py-28 border border-dashed border-gray-200 rounded-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center mx-auto mb-5">
+              <Icon icon={faGraduationCap} className="text-2xl text-gray-300" />
+            </div>
+            <h3 className="font-black text-gray-950 tracking-tight mb-2">No courses yet</h3>
+            <p className="text-sm text-gray-400 mb-7">Create your first course and start teaching.</p>
+            <Link
+              to="/my-courses/new"
+              className="inline-flex items-center gap-2 rounded-xl bg-gray-950 text-white px-6 py-3 text-sm font-bold hover:bg-gray-800 transition-colors"
+            >
+              <Icon icon={faPlus} className="text-xs" />
+              Create first course
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {courses.map(course => (
+              <div
+                key={course.id}
+                className="border border-gray-100 rounded-2xl overflow-hidden hover:border-gray-200 hover:shadow-md transition-all duration-200"
+              >
+                <CourseThumbnail id={course.id} title={course.title} className="h-32" />
+                <div className="p-5 bg-white">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h2 className="font-bold text-gray-950 line-clamp-1 tracking-tight text-sm flex-1">{course.title}</h2>
+                    <span className={`shrink-0 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full border ${STATUS_BADGE[course.status] ?? 'bg-gray-100 text-gray-500 border-gray-200'}`}>
                       {course.status}
                     </span>
-                  </td>
-                  <td className="px-5 py-4 text-gray-500">{course.enrollmentCount}</td>
-                  <td className="px-5 py-4 text-gray-500">${course.price}</td>
-                  <td className="px-5 py-4 text-right">
-                    <div className="flex justify-end gap-3">
-                      <Link to={`/my-courses/${course.id}/edit`} className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-500">
-                        <Icon icon={faPen} className="text-xs" />Edit
-                      </Link>
-                      {course.status === 'Draft' && (
-                        <button onClick={() => handlePublish(course.id)} className="text-green-600 hover:text-green-500">Publish</button>
-                      )}
-                      {course.status === 'Published' && (
-                        <button onClick={() => handleArchive(course.id)} className="text-yellow-600 hover:text-yellow-500">Archive</button>
-                      )}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
+                    <Icon icon={faUsers} className="text-gray-300 text-[10px]" />
+                    {course.enrollmentCount} students
+                    <span className="text-gray-200">·</span>
+                    {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <Link
+                      to={`/my-courses/${course.id}/edit`}
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-xs font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                    >
+                      <Icon icon={faPen} className="text-[9px]" />Edit
+                    </Link>
+                    {course.status === 'Draft' && (
                       <button
-                        onClick={() => setConfirm({ courseId: course.id, title: course.title })}
-                        className="flex items-center gap-1.5 text-red-500 hover:text-red-400"
+                        onClick={() => handlePublish(course.id)}
+                        className="flex-1 rounded-xl border border-green-200 px-3 py-2 text-xs font-bold text-green-700 hover:bg-green-50 transition-colors"
                       >
-                        <Icon icon={faTrash} className="text-xs" />Delete
+                        Publish
                       </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+                    )}
+                    {course.status === 'Published' && (
+                      <button
+                        onClick={() => handleArchive(course.id)}
+                        className="flex-1 rounded-xl border border-amber-200 px-3 py-2 text-xs font-bold text-amber-700 hover:bg-amber-50 transition-colors"
+                      >
+                        Archive
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setConfirm({ courseId: course.id, title: course.title })}
+                      className="w-9 h-9 flex items-center justify-center rounded-xl border border-red-100 text-red-400 hover:bg-red-50 hover:border-red-200 transition-colors"
+                    >
+                      <Icon icon={faTrash} className="text-[10px]" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
