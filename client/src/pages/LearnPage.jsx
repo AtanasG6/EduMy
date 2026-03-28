@@ -125,9 +125,18 @@ export default function LearnPage() {
             <Icon icon={faArrowLeft} className="text-[10px]" />
             Back to My Learning
           </Link>
-          <h2 className="font-semibold text-gray-900 text-sm line-clamp-2 leading-snug">
-            {enrollment.courseTitle}
-          </h2>
+          <div className="flex items-start justify-between gap-2">
+            <h2 className="font-semibold text-gray-900 text-sm line-clamp-2 leading-snug">
+              {enrollment.courseTitle}
+            </h2>
+            <Link
+              to={`/courses/${enrollment.courseId}`}
+              className="shrink-0 text-[10px] font-medium text-gray-400 hover:text-indigo-600 transition-colors mt-0.5 whitespace-nowrap"
+              title="Go to course page"
+            >
+              Course page
+            </Link>
+          </div>
 
           {totalLectures > 0 && (
             <div className="mt-3">
