@@ -52,7 +52,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
+    <div className="h-[calc(100vh-57px)] bg-gray-50 flex items-center justify-center px-4 overflow-hidden">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link to="/" className="text-xl font-bold text-gray-900 tracking-tight">
