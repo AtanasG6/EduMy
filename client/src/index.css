@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body {
+  overscroll-behavior: none;
+}
+
 /* Strip VideoSkin's own border-radius — the wrapper handles it */
 .media-default-skin {
   border-radius: 0 !important;
