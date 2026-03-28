@@ -6,5 +6,6 @@ public class ModuleDto
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
     public int OrderIndex { get; set; }
+    public int? QuizId { get; set; }
     public IEnumerable<LectureDto> Lectures { get; set; } = [];
 }

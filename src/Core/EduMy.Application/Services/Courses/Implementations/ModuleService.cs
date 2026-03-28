@@ -17,7 +17,7 @@ public class ModuleService : IModuleService
 
     public async Task<ApiResponse<IEnumerable<ModuleDto>>> GetByCourseIdAsync(int courseId)
     {
-        var modules = await _moduleRepository.FindAllAsync(m => m.CourseId == courseId);
+        var modules = await _moduleRepository.FindAllAsync(m => m.CourseId == courseId, "Lectures", "Quiz");
         var ordered = modules.OrderBy(m => m.OrderIndex).Select(MapToDto);
         return ApiResponse<IEnumerable<ModuleDto>>.Ok(ordered);
     }
@@ -92,6 +92,7 @@ public class ModuleService : IModuleService
         Title = module.Title,
         Description = module.Description,
         OrderIndex = module.OrderIndex,
+        QuizId = module.Quiz?.Id,
         Lectures = module.Lectures?.OrderBy(l => l.OrderIndex).Select(l => new LectureDto
         {
             Id = l.Id,

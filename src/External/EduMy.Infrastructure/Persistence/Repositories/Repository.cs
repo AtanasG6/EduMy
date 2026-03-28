@@ -20,14 +20,32 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId>
     public async Task<TEntity?> GetByIdAsync(TId id)
         => await DbSet.FindAsync(id);
 
+    public async Task<TEntity?> GetByIdAsync(TId id, params string[] includes)
+    {
+        var query = includes.Aggregate(DbSet.AsQueryable(), (q, i) => q.Include(i));
+        return await query.FirstOrDefaultAsync(e => e.Id!.Equals(id));
+    }
+
     public async Task<List<TEntity>> GetAllAsync()
         => await DbSet.ToListAsync();
 
     public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate)
         => await DbSet.FirstOrDefaultAsync(predicate);
 
+    public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+    {
+        var query = includes.Aggregate(DbSet.AsQueryable(), (q, i) => q.Include(i));
+        return await query.FirstOrDefaultAsync(predicate);
+    }
+
     public async Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate)
         => await DbSet.Where(predicate).ToListAsync();
+
+    public async Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+    {
+        var query = includes.Aggregate(DbSet.AsQueryable(), (q, i) => q.Include(i));
+        return await query.Where(predicate).ToListAsync();
+    }
 
     public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
         => await DbSet.AnyAsync(predicate);
