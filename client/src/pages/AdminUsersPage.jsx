@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react'
 import api from '../api'
+import { Icon, faSearch, faLock, faUnlock, faTrash } from '../icons'
+import ConfirmModal from '../ConfirmModal'
 
-const ROLE_COLORS = { Admin: 'bg-purple-100 text-purple-700', Lecturer: 'bg-blue-100 text-blue-700', Student: 'bg-gray-100 text-gray-600' }
+const ROLE_COLORS = {
+  Admin: 'bg-purple-100 text-purple-700',
+  Lecturer: 'bg-blue-100 text-blue-700',
+  Student: 'bg-gray-100 text-gray-600',
+}
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [confirm, setConfirm] = useState(null) // { type: 'block'|'unblock'|'delete', userId, name }
+  const [confirmLoading, setConfirmLoading] = useState(false)
 
   useEffect(() => {
     api.get('/users')
@@ -15,32 +23,32 @@ export default function AdminUsersPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  async function handleBlock(id) {
+  async function runConfirm() {
+    if (!confirm) return
+    setConfirmLoading(true)
     try {
-      await api.put(`/users/${id}/block`)
-      setUsers(users.map(u => u.id === id ? { ...u, isBlocked: true } : u))
+      if (confirm.type === 'block') {
+        await api.put(`/users/${confirm.userId}/block`)
+        setUsers(users.map(u => u.id === confirm.userId ? { ...u, isBlocked: true } : u))
+      } else if (confirm.type === 'unblock') {
+        await api.put(`/users/${confirm.userId}/unblock`)
+        setUsers(users.map(u => u.id === confirm.userId ? { ...u, isBlocked: false } : u))
+      } else if (confirm.type === 'delete') {
+        await api.delete(`/users/${confirm.userId}`)
+        setUsers(users.filter(u => u.id !== confirm.userId))
+      }
+      setConfirm(null)
     } catch {
       // ignore
+    } finally {
+      setConfirmLoading(false)
     }
   }
 
-  async function handleUnblock(id) {
-    try {
-      await api.put(`/users/${id}/unblock`)
-      setUsers(users.map(u => u.id === id ? { ...u, isBlocked: false } : u))
-    } catch {
-      // ignore
-    }
-  }
-
-  async function handleDelete(id) {
-    if (!confirm('Delete this user permanently?')) return
-    try {
-      await api.delete(`/users/${id}`)
-      setUsers(users.filter(u => u.id !== id))
-    } catch {
-      // ignore
-    }
+  const confirmConfig = {
+    block: { title: 'Block user', message: `Block ${confirm?.name}? They won't be able to log in.`, label: 'Block', danger: false },
+    unblock: { title: 'Unblock user', message: `Unblock ${confirm?.name}?`, label: 'Unblock', danger: false },
+    delete: { title: 'Delete user', message: `Permanently delete ${confirm?.name}? This cannot be undone.`, label: 'Delete', danger: true },
   }
 
   const filtered = users.filter(u =>
@@ -51,18 +59,37 @@ export default function AdminUsersPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-10">
+      {confirm && confirmConfig[confirm.type] && (
+        <ConfirmModal
+          title={confirmConfig[confirm.type].title}
+          message={confirmConfig[confirm.type].message}
+          confirmLabel={confirmConfig[confirm.type].label}
+          danger={confirmConfig[confirm.type].danger}
+          loading={confirmLoading}
+          onConfirm={runConfirm}
+          onClose={() => setConfirm(null)}
+        />
+      )}
+
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Users</h1>
 
-      <input
-        type="text"
-        placeholder="Search users…"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        className="mb-6 rounded-lg border border-gray-300 px-3.5 py-2 text-sm w-64 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-      />
+      <div className="relative mb-6">
+        <Icon icon={faSearch} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+        <input
+          type="text"
+          placeholder="Search users…"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="rounded-lg border border-gray-300 pl-10 pr-4 py-2 text-sm w-64 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        />
+      </div>
 
       {loading ? (
-        <p className="text-gray-400">Loading…</p>
+        <div className="space-y-3">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 animate-pulse h-12" />
+          ))}
+        </div>
       ) : (
         <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
@@ -92,11 +119,27 @@ export default function AdminUsersPage() {
                   </td>
                   <td className="px-5 py-4 text-right">
                     <div className="flex justify-end gap-3">
-                      {user.isBlocked
-                        ? <button onClick={() => handleUnblock(user.id)} className="text-indigo-600 hover:underline">Unblock</button>
-                        : <button onClick={() => handleBlock(user.id)} className="text-yellow-600 hover:underline">Block</button>
-                      }
-                      <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:underline">Delete</button>
+                      {user.isBlocked ? (
+                        <button
+                          onClick={() => setConfirm({ type: 'unblock', userId: user.id, name: `${user.firstName} ${user.lastName}` })}
+                          className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-500"
+                        >
+                          <Icon icon={faUnlock} className="text-xs" />Unblock
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setConfirm({ type: 'block', userId: user.id, name: `${user.firstName} ${user.lastName}` })}
+                          className="flex items-center gap-1.5 text-yellow-600 hover:text-yellow-500"
+                        >
+                          <Icon icon={faLock} className="text-xs" />Block
+                        </button>
+                      )}
+                      <button
+                        onClick={() => setConfirm({ type: 'delete', userId: user.id, name: `${user.firstName} ${user.lastName}` })}
+                        className="flex items-center gap-1.5 text-red-500 hover:text-red-400"
+                      >
+                        <Icon icon={faTrash} className="text-xs" />Delete
+                      </button>
                     </div>
                   </td>
                 </tr>
