@@ -23,7 +23,8 @@ public class CourseService : ICourseService
             (filter.Search == null || c.Title.Contains(filter.Search)) &&
             (filter.CategoryId == null || c.CategoryId == filter.CategoryId) &&
             (filter.MinPrice == null || c.Price >= filter.MinPrice) &&
-            (filter.MaxPrice == null || c.Price <= filter.MaxPrice));
+            (filter.MaxPrice == null || c.Price <= filter.MaxPrice),
+            "Lecturer", "Category", "Enrollments", "Reviews");
 
         var totalCount = courses.Count;
         var items = courses
@@ -42,13 +43,13 @@ public class CourseService : ICourseService
 
     public async Task<ApiResponse<IEnumerable<CourseDto>>> GetMyAsync(int lecturerId)
     {
-        var courses = await _courseRepository.FindAllAsync(c => c.LecturerId == lecturerId);
+        var courses = await _courseRepository.FindAllAsync(c => c.LecturerId == lecturerId, "Lecturer", "Category", "Enrollments", "Reviews");
         return ApiResponse<IEnumerable<CourseDto>>.Ok(courses.Select(MapToDto));
     }
 
     public async Task<ApiResponse<CourseDto>> GetByIdAsync(int id)
     {
-        var course = await _courseRepository.GetByIdAsync(id);
+        var course = await _courseRepository.GetByIdAsync(id, "Lecturer", "Category", "Enrollments", "Reviews");
 
         if (course is null)
             return ApiResponse<CourseDto>.Fail("Course not found.");
