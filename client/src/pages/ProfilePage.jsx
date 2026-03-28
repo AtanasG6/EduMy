@@ -24,7 +24,10 @@ export default function ProfilePage() {
     setSaving(true)
     setMessage('')
     try {
-      const res = await api.put('/users/me', form)
+      const res = await api.put('/users/me', {
+        ...form,
+        yearsOfExperience: form.yearsOfExperience === '' ? null : parseInt(form.yearsOfExperience),
+      })
       const updated = res.data.data
       const token = localStorage.getItem('token')
       login({ ...updated, token })
