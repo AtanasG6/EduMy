@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import api from '../api'
-import { Icon, faBook, faStar, faUsers } from '../icons'
+import { Icon, faStar, faUsers, faSearch, faXmark } from '../icons'
+import CourseThumbnail from '../CourseThumbnail'
 
 export default function CoursesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -9,6 +10,7 @@ export default function CoursesPage() {
   const [categories, setCategories] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [searchInput, setSearchInput] = useState(searchParams.get('search') || '')
 
   const search = searchParams.get('search') || ''
   const categoryId = searchParams.get('categoryId') || ''
@@ -37,101 +39,152 @@ export default function CoursesPage() {
     setSearchParams(p)
   }
 
+  function handleSearch(e) {
+    e.preventDefault()
+    setParam('search', searchInput)
+  }
+
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">All Courses</h1>
-
-      {/* Filters */}
-      <div className="flex flex-wrap gap-3 mb-8">
-        <input
-          type="text"
-          placeholder="Search courses…"
-          defaultValue={search}
-          onKeyDown={e => e.key === 'Enter' && setParam('search', e.target.value)}
-          onBlur={e => setParam('search', e.target.value)}
-          className="rounded-lg border border-gray-300 px-3.5 py-2 text-sm w-64 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-        />
-        <select
-          value={categoryId}
-          onChange={e => setParam('categoryId', e.target.value)}
-          className="rounded-lg border border-gray-300 px-3.5 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-        >
-          <option value="">All categories</option>
-          {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </select>
+    <div className="min-h-screen bg-white">
+      {/* Page header */}
+      <div className="border-b border-gray-100 bg-white px-6 py-10">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-black tracking-tight text-gray-950 mb-1">Courses</h1>
+          <p className="text-gray-500 text-sm">Expand your skills with expert-built courses</p>
+        </div>
       </div>
 
-      {/* Results */}
-      {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">
-              <div className="h-40 bg-gray-100" />
-              <div className="p-5 space-y-2">
-                <div className="h-3 bg-gray-100 rounded w-1/3" />
-                <div className="h-4 bg-gray-100 rounded w-3/4" />
-                <div className="h-3 bg-gray-100 rounded w-1/2" />
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        {/* Filter bar */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          <form onSubmit={handleSearch} className="relative mr-2">
+            <Icon icon={faSearch} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search courses…"
+              value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
+              className="rounded-xl border border-gray-200 bg-gray-50 pl-9 pr-9 py-2.5 text-sm w-60 focus:border-gray-950 focus:bg-white focus:outline-none focus:ring-0 transition-colors"
+            />
+            {searchInput && (
+              <button
+                type="button"
+                onClick={() => { setSearchInput(''); setParam('search', '') }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+              >
+                <Icon icon={faXmark} className="text-xs" />
+              </button>
+            )}
+          </form>
+
+          <button
+            onClick={() => setParam('categoryId', '')}
+            className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
+              !categoryId ? 'bg-gray-950 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            All
+          </button>
+          {categories.map(c => (
+            <button
+              key={c.id}
+              onClick={() => setParam('categoryId', c.id.toString())}
+              className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
+                categoryId === c.id.toString() ? 'bg-gray-950 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {c.name}
+            </button>
           ))}
         </div>
-      ) : courses.length === 0 ? (
-        <div className="text-center py-20">
-          <p className="text-gray-400 text-lg">No courses found.</p>
-        </div>
-      ) : (
-        <>
-          <p className="text-sm text-gray-500 mb-4">{totalCount} course{totalCount !== 1 ? 's' : ''} found</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map(course => (
-              <Link
-                key={course.id}
-                to={`/courses/${course.id}`}
-                className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
-              >
-                <div className="h-40 bg-gradient-to-br from-indigo-50 to-violet-50 flex items-center justify-center">
-                  <Icon icon={faBook} className="text-5xl text-indigo-300" />
+
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="border border-gray-100 rounded-2xl overflow-hidden animate-pulse">
+                <div className="h-40 bg-gray-100" />
+                <div className="p-5 space-y-3">
+                  <div className="h-2.5 bg-gray-100 rounded-full w-1/4" />
+                  <div className="h-4 bg-gray-100 rounded-full w-3/4" />
+                  <div className="h-3 bg-gray-100 rounded-full w-1/2" />
                 </div>
-                <div className="p-5">
-                  <p className="text-xs font-medium text-indigo-600 mb-1">{course.categoryName}</p>
-                  <h2 className="font-semibold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors line-clamp-2">
-                    {course.title}
-                  </h2>
-                  <p className="text-xs text-gray-500 mb-4">by {course.lecturerName}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-gray-900">${course.price}</span>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      {course.averageRating > 0 && <span><Icon icon={faStar} className="text-amber-400 mr-0.5" />{course.averageRating.toFixed(1)}</span>}
-                      <span>{course.enrollmentCount} students</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              </div>
             ))}
           </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2 mt-10">
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSearchParams({ ...Object.fromEntries(searchParams), page: i + 1 })}
-                  className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
-                    page === i + 1
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
-                  }`}
+        ) : courses.length === 0 ? (
+          <div className="text-center py-28 border border-dashed border-gray-200 rounded-2xl">
+            <Icon icon={faSearch} className="text-4xl text-gray-200 mb-4" />
+            <p className="font-bold text-gray-950 mb-1">No courses found</p>
+            <p className="text-sm text-gray-400 mb-6">Try different search terms or clear the filters</p>
+            {(search || categoryId) && (
+              <button
+                onClick={() => { setSearchInput(''); setSearchParams({}) }}
+                className="rounded-xl bg-gray-950 text-white text-sm font-semibold px-5 py-2.5 hover:bg-gray-800 transition-colors"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
+        ) : (
+          <>
+            <p className="text-xs text-gray-400 font-medium mb-6 uppercase tracking-wide">
+              {totalCount} course{totalCount !== 1 ? 's' : ''} found
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {courses.map(course => (
+                <Link
+                  key={course.id}
+                  to={`/courses/${course.id}`}
+                  className="group border border-gray-100 rounded-2xl overflow-hidden bg-white hover:border-gray-300 hover:shadow-lg transition-all duration-200"
                 >
-                  {i + 1}
-                </button>
+                  <CourseThumbnail id={course.id} title={course.title} className="h-40" />
+                  <div className="p-5">
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">{course.categoryName}</p>
+                    <h2 className="font-bold text-gray-950 mb-1.5 group-hover:text-indigo-600 transition-colors line-clamp-2 leading-snug tracking-tight">
+                      {course.title}
+                    </h2>
+                    <p className="text-xs text-gray-400 mb-4">by {course.lecturerName}</p>
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                      <span className="text-sm font-black text-gray-950">
+                        {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
+                      </span>
+                      <div className="flex items-center gap-3 text-xs text-gray-400">
+                        {course.averageRating > 0 && (
+                          <span className="flex items-center gap-1">
+                            <Icon icon={faStar} className="text-amber-400 text-[10px]" />
+                            {course.averageRating.toFixed(1)}
+                          </span>
+                        )}
+                        <span>{course.enrollmentCount} students</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               ))}
             </div>
-          )}
-        </>
-      )}
+
+            {totalPages > 1 && (
+              <div className="flex justify-center gap-1.5 mt-12">
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSearchParams({ ...Object.fromEntries(searchParams), page: i + 1 })}
+                    className={`w-9 h-9 rounded-xl text-sm font-bold transition-colors ${
+                      page === i + 1
+                        ? 'bg-gray-950 text-white'
+                        : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }
