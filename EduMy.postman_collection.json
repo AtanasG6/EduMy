@@ -56,7 +56,57 @@
             "url": "{{baseUrl}}/auth/login",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"ivan@example.com\",\n  \"password\": \"Password123!\"\n}"
+              "raw": "{\n  \"email\": \"student@edumy.com\",\n  \"password\": \"Student123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (Lecturer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('token', json.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"lecturer@edumy.com\",\n  \"password\": \"Lecturer123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('token', json.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@edumy.com\",\n  \"password\": \"Admin123!\"\n}"
             }
           }
         }
@@ -84,7 +134,7 @@
             "url": "{{baseUrl}}/users/me",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Ivan\",\n  \"lastName\": \"Petrov\"\n}"
+              "raw": "{\n  \"firstName\": \"Ivan\",\n  \"lastName\": \"Petrov\",\n  \"bio\": \"Student and developer.\",\n  \"specialization\": null,\n  \"yearsOfExperience\": null\n}"
             }
           }
         },
@@ -99,7 +149,7 @@
             "url": "{{baseUrl}}/users/me/password",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"currentPassword\": \"Password123!\",\n  \"newPassword\": \"NewPassword123!\"\n}"
+              "raw": "{\n  \"currentPassword\": \"Student123!\",\n  \"newPassword\": \"NewPassword123!\"\n}"
             }
           }
         },
@@ -114,17 +164,17 @@
         {
           "name": "[Admin] Block user",
           "request": {
-            "method": "POST",
+            "method": "PUT",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": "{{baseUrl}}/users/1/block"
+            "url": "{{baseUrl}}/users/3/block"
           }
         },
         {
           "name": "[Admin] Unblock user",
           "request": {
-            "method": "POST",
+            "method": "PUT",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": "{{baseUrl}}/users/1/unblock"
+            "url": "{{baseUrl}}/users/3/unblock"
           }
         },
         {
@@ -132,7 +182,7 @@
           "request": {
             "method": "DELETE",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": "{{baseUrl}}/users/1"
+            "url": "{{baseUrl}}/users/3"
           }
         }
       ]
@@ -165,7 +215,7 @@
             "url": "{{baseUrl}}/categories",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Programming\"\n}"
+              "raw": "{\n  \"name\": \"Mobile Development\",\n  \"description\": \"iOS and Android development\"\n}"
             }
           }
         },
@@ -180,7 +230,7 @@
             "url": "{{baseUrl}}/categories/1",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Web Development\"\n}"
+              "raw": "{\n  \"name\": \"Programming & Software\",\n  \"description\": \"Learn to code\"\n}"
             }
           }
         },
@@ -209,7 +259,9 @@
                 { "key": "page", "value": "1" },
                 { "key": "pageSize", "value": "10" },
                 { "key": "search", "value": "", "disabled": true },
-                { "key": "categoryId", "value": "", "disabled": true }
+                { "key": "categoryId", "value": "", "disabled": true },
+                { "key": "minPrice", "value": "", "disabled": true },
+                { "key": "maxPrice", "value": "", "disabled": true }
               ]
             }
           }
@@ -289,6 +341,14 @@
       "name": "Modules",
       "item": [
         {
+          "name": "Get modules for course",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/modules/course/1"
+          }
+        },
+        {
           "name": "[Lecturer] Create module",
           "request": {
             "method": "POST",
@@ -296,10 +356,10 @@
               { "key": "Authorization", "value": "Bearer {{token}}" },
               { "key": "Content-Type", "value": "application/json" }
             ],
-            "url": "{{baseUrl}}/modules",
+            "url": "{{baseUrl}}/modules/course/1",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"courseId\": 1,\n  \"title\": \"Getting Started\"\n}"
+              "raw": "{\n  \"title\": \"Getting Started\",\n  \"description\": \"Introduction to the course.\"\n}"
             }
           }
         },
@@ -314,7 +374,7 @@
             "url": "{{baseUrl}}/modules/1",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Introduction\"\n}"
+              "raw": "{\n  \"title\": \"Introduction\",\n  \"description\": \"Updated description.\"\n}"
             }
           }
         },
@@ -325,12 +385,35 @@
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": "{{baseUrl}}/modules/1"
           }
+        },
+        {
+          "name": "[Lecturer] Reorder modules",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/modules/course/1/reorder",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderedIds\": [3, 1, 2]\n}"
+            }
+          }
         }
       ]
     },
     {
       "name": "Lectures",
       "item": [
+        {
+          "name": "Get lecture by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/lectures/1"
+          }
+        },
         {
           "name": "[Lecturer] Create lecture",
           "request": {
@@ -339,10 +422,10 @@
               { "key": "Authorization", "value": "Bearer {{token}}" },
               { "key": "Content-Type", "value": "application/json" }
             ],
-            "url": "{{baseUrl}}/lectures",
+            "url": "{{baseUrl}}/lectures/module/1",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"moduleId\": 1,\n  \"title\": \"Hello World\",\n  \"content\": \"Your first C# program.\",\n  \"videoUrl\": \"https://www.youtube.com/embed/example\"\n}"
+              "raw": "{\n  \"title\": \"Hello World\",\n  \"description\": \"Your first C# program.\",\n  \"videoUrl\": \"https://www.youtube.com/embed/gfkTfcpWqAY\",\n  \"durationMinutes\": 15\n}"
             }
           }
         },
@@ -357,7 +440,7 @@
             "url": "{{baseUrl}}/lectures/1",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Hello World (Updated)\",\n  \"content\": \"Updated content.\",\n  \"videoUrl\": \"\"\n}"
+              "raw": "{\n  \"title\": \"Hello World (Updated)\",\n  \"description\": \"Updated description.\",\n  \"videoUrl\": \"https://www.youtube.com/embed/gfkTfcpWqAY\",\n  \"durationMinutes\": 20\n}"
             }
           }
         },
@@ -367,6 +450,21 @@
             "method": "DELETE",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": "{{baseUrl}}/lectures/1"
+          }
+        },
+        {
+          "name": "[Lecturer] Reorder lectures",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/lectures/module/1/reorder",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderedIds\": [3, 1, 2]\n}"
+            }
           }
         }
       ]
@@ -402,8 +500,102 @@
           "name": "Mark lecture complete",
           "request": {
             "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/enrollments/1/lectures/1/complete",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"watchTimeSeconds\": 300\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quizzes",
+      "item": [
+        {
+          "name": "Get quiz for module",
+          "request": {
+            "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": "{{baseUrl}}/enrollments/1/lectures/1/complete"
+            "url": "{{baseUrl}}/quizzes/module/1"
+          }
+        },
+        {
+          "name": "[Lecturer] Create quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/quizzes/module/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Module 1 Quiz\",\n  \"description\": \"Test your knowledge.\",\n  \"passingScore\": 70\n}"
+            }
+          }
+        },
+        {
+          "name": "[Lecturer] Delete quiz",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/quizzes/1"
+          }
+        },
+        {
+          "name": "[Lecturer] Add question",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/quizzes/1/questions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"What does HTML stand for?\",\n  \"points\": 1,\n  \"answers\": [\n    { \"text\": \"HyperText Markup Language\", \"isCorrect\": true },\n    { \"text\": \"Home Tool Markup Language\", \"isCorrect\": false },\n    { \"text\": \"Hyperlink Text Markup Language\", \"isCorrect\": false },\n    { \"text\": \"HyperText Management Language\", \"isCorrect\": false }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "[Lecturer] Delete question",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/quizzes/1/questions/1"
+          }
+        },
+        {
+          "name": "Submit quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/quizzes/1/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enrollmentId\": 1,\n  \"answers\": [\n    { \"questionId\": 1, \"answerId\": 1 },\n    { \"questionId\": 2, \"answerId\": 5 },\n    { \"questionId\": 3, \"answerId\": 9 }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get quiz attempts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/1/attempts?enrollmentId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", "1", "attempts"],
+              "query": [{ "key": "enrollmentId", "value": "1" }]
+            }
           }
         }
       ]
@@ -429,7 +621,7 @@
             "url": "{{baseUrl}}/reviews",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"courseId\": 1,\n  \"rating\": 5,\n  \"comment\": \"Great course!\"\n}"
+              "raw": "{\n  \"courseId\": 1,\n  \"rating\": 5,\n  \"comment\": \"Excellent course! Very clear explanations.\"\n}"
             }
           }
         },
@@ -439,49 +631,6 @@
             "method": "DELETE",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": "{{baseUrl}}/reviews/1"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Quizzes",
-      "item": [
-        {
-          "name": "Get quiz for course",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": "{{baseUrl}}/quizzes/course/1"
-          }
-        },
-        {
-          "name": "[Lecturer] Create quiz",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" },
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": "{{baseUrl}}/quizzes",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"courseId\": 1,\n  \"title\": \"Final Quiz\"\n}"
-            }
-          }
-        },
-        {
-          "name": "Submit quiz attempt",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" },
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": "{{baseUrl}}/quizzes/1/attempt",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"answers\": [\n    { \"questionId\": 1, \"answerId\": 2 },\n    { \"questionId\": 2, \"answerId\": 5 }\n  ]\n}"
-            }
           }
         }
       ]
