@@ -55,7 +55,8 @@ public class QuizService : IQuizService
         await _quizRepository.AddAsync(quiz);
         await _quizRepository.SaveChangesAsync();
 
-        return ApiResponse<QuizDto>.Ok(MapToDto(quiz), "Quiz created.");
+        var created = await _quizRepository.GetByIdAsync(quiz.Id, "Questions");
+        return ApiResponse<QuizDto>.Ok(MapToDto(created!), "Quiz created.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int quizId)

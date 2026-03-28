@@ -53,7 +53,8 @@ public class ReviewService : IReviewService
         await _reviewRepository.AddAsync(review);
         await _reviewRepository.SaveChangesAsync();
 
-        return ApiResponse<ReviewDto>.Ok(MapToDto(review), "Review submitted.");
+        var created = await _reviewRepository.GetByIdAsync(review.Id, "Student");
+        return ApiResponse<ReviewDto>.Ok(MapToDto(created!), "Review submitted.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int id)

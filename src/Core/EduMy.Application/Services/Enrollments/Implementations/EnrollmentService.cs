@@ -59,7 +59,8 @@ public class EnrollmentService : IEnrollmentService
         await _enrollmentRepository.AddAsync(enrollment);
         await _enrollmentRepository.SaveChangesAsync();
 
-        return ApiResponse<EnrollmentDto>.Ok(MapToDto(enrollment), "Enrolled successfully.");
+        var created = await _enrollmentRepository.GetByIdAsync(enrollment.Id, "Course");
+        return ApiResponse<EnrollmentDto>.Ok(MapToDto(created!), "Enrolled successfully.");
     }
 
     public async Task<ApiResponse> MarkLectureCompleteAsync(int enrollmentId, int lectureId, int watchTimeSeconds)

@@ -37,12 +37,13 @@ public class ModuleService : IModuleService
         await _moduleRepository.AddAsync(module);
         await _moduleRepository.SaveChangesAsync();
 
-        return ApiResponse<ModuleDto>.Ok(MapToDto(module), "Module created.");
+        var created = await _moduleRepository.GetByIdAsync(module.Id, "Lectures", "Quiz");
+        return ApiResponse<ModuleDto>.Ok(MapToDto(created!), "Module created.");
     }
 
     public async Task<ApiResponse<ModuleDto>> UpdateAsync(int id, string title, string? description)
     {
-        var module = await _moduleRepository.GetByIdAsync(id);
+        var module = await _moduleRepository.GetByIdAsync(id, "Lectures", "Quiz");
 
         if (module is null)
             return ApiResponse<ModuleDto>.Fail("Module not found.");
