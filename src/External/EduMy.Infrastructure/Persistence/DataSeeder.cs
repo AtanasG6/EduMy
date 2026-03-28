@@ -1,6 +1,7 @@
 using EduMy.Domain.Entities.Courses;
 using EduMy.Domain.Entities.Enrollments;
 using EduMy.Domain.Entities.Quizzes;
+using EduMy.Domain.Entities.Reviews;
 using EduMy.Domain.Entities.Users;
 using EduMy.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -324,6 +325,19 @@ public static class DataSeeder
             new Answer { QuestionId = q14.Id, Text = "<section>", IsCorrect = false, OrderIndex = 4 }
         );
 
+        await context.SaveChangesAsync();
+
+        // Reviews
+        context.Set<Review>().AddRange(
+            new Review { StudentId = student.Id, CourseId = course1.Id, Rating = 5, Comment = "Excellent course! Very clear explanations and well-structured content.", CreatedAt = now, UpdatedAt = now },
+            new Review { StudentId = admin.Id,   CourseId = course1.Id, Rating = 4, Comment = "Great intro to C#. Would love more exercises.", CreatedAt = now, UpdatedAt = now },
+            new Review { StudentId = student.Id, CourseId = course2.Id, Rating = 5, Comment = "Best React course I've taken. Hooks are explained perfectly.", CreatedAt = now, UpdatedAt = now },
+            new Review { StudentId = admin.Id,   CourseId = course2.Id, Rating = 4, Comment = "Very practical and up to date. Highly recommend.", CreatedAt = now, UpdatedAt = now },
+            new Review { StudentId = student.Id, CourseId = course3.Id, Rating = 4, Comment = "Solid introduction to data science. Pandas section was especially helpful.", CreatedAt = now, UpdatedAt = now },
+            new Review { StudentId = admin.Id,   CourseId = course3.Id, Rating = 3, Comment = "Good content but could use more real-world examples.", CreatedAt = now, UpdatedAt = now },
+            new Review { StudentId = student.Id, CourseId = course5.Id, Rating = 5, Comment = "Perfect for beginners. Loved the flexbox section!", CreatedAt = now, UpdatedAt = now },
+            new Review { StudentId = admin.Id,   CourseId = course5.Id, Rating = 5, Comment = "Free and fantastic. The video quality is great.", CreatedAt = now, UpdatedAt = now }
+        );
         await context.SaveChangesAsync();
 
         // Enroll student in course 1 and course 5
