@@ -28,6 +28,13 @@ import {
   faBell,
   faEnvelope,
   faCircleCheck,
+  faArrowRight,
+  faTrophy,
+  faLayerGroup,
+  faChevronRight,
+  faChevronDown,
+  faTag,
+  faInfinity,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faStar as faStarOutline,
@@ -68,4 +75,11 @@ export {
   faBell,
   faEnvelope,
   faCircleCheck,
+  faArrowRight,
+  faTrophy,
+  faLayerGroup,
+  faChevronRight,
+  faChevronDown,
+  faTag,
+  faInfinity,
 }
