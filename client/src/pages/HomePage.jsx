@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import api from '../api'
-import { Icon, faArrowRight, faPlay, faBook, faGraduationCap, faStar, faFire, faCircleCheck } from '../icons'
+import { Icon, faArrowRight, faPlay, faBook, faGraduationCap, faStar, faFire, faCircleCheck, faPen, faUsers, faChartLine, faPlus } from '../icons'
 import CourseThumbnail from '../CourseThumbnail'
 
 export default function HomePage() {
@@ -10,12 +10,21 @@ export default function HomePage() {
   const [courses, setCourses] = useState([])
   const [categories, setCategories] = useState([])
   const [enrollments, setEnrollments] = useState([])
+  const [myCourses, setMyCourses] = useState([])
+  const [allUsers, setAllUsers] = useState([])
 
   useEffect(() => {
     api.get('/courses', { params: { page: 1, pageSize: 6 } }).then(r => setCourses(r.data.data?.items ?? [])).catch(() => {})
     api.get('/categories').then(r => setCategories(r.data.data ?? [])).catch(() => {})
-    if (user) {
+    if (user?.role === 'Student') {
       api.get('/enrollments').then(r => setEnrollments(r.data.data ?? [])).catch(() => {})
+    }
+    if (user?.role === 'Lecturer') {
+      api.get('/courses/my').then(r => setMyCourses(r.data.data ?? [])).catch(() => {})
+    }
+    if (user?.role === 'Admin') {
+      api.get('/users').then(r => setAllUsers(r.data.data ?? [])).catch(() => {})
+      api.get('/courses/my').then(r => setMyCourses(r.data.data ?? [])).catch(() => {})
     }
   }, [user])
 
@@ -25,7 +34,7 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       {/* Hero — personalized if logged in */}
-      {user ? (
+      {user?.role === 'Student' ? (
         <section className="border-b border-gray-100 bg-gradient-to-br from-white to-indigo-50/60 px-6 py-14">
           <div className="max-w-5xl mx-auto">
             <p className="text-indigo-500 text-sm font-medium mb-1">Welcome back</p>
@@ -45,6 +54,78 @@ export default function HomePage() {
                 <div className="text-2xl font-bold text-green-600">{completed.length}</div>
                 <div className="text-xs text-gray-400 mt-0.5">Completed</div>
               </div>
+            </div>
+          </div>
+        </section>
+      ) : user?.role === 'Lecturer' ? (
+        <section className="border-b border-gray-100 bg-gradient-to-br from-white to-violet-50/60 px-6 py-14">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-violet-500 text-sm font-medium mb-1">Lecturer dashboard</p>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 mb-2">
+              {user.firstName} {user.lastName}
+            </h1>
+            <p className="text-gray-500 text-sm mb-6">Manage your courses and track student progress.</p>
+            <div className="flex items-center gap-4 flex-wrap mb-6">
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-gray-900">{myCourses.length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Total courses</div>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-green-600">{myCourses.filter(c => c.status === 'Published').length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Published</div>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-amber-500">{myCourses.filter(c => c.status === 'Draft').length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Drafts</div>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-indigo-600">{myCourses.reduce((s, c) => s + (c.enrollmentCount ?? 0), 0)}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Students</div>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <Link to="/my-courses/new" className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 text-white px-5 py-2.5 text-sm font-semibold hover:bg-indigo-500 transition-colors">
+                <Icon icon={faPlus} className="text-xs" />New course
+              </Link>
+              <Link to="/my-courses" className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white text-gray-700 px-5 py-2.5 text-sm font-semibold hover:bg-gray-50 transition-colors">
+                <Icon icon={faPen} className="text-xs" />My courses
+              </Link>
+            </div>
+          </div>
+        </section>
+      ) : user?.role === 'Admin' ? (
+        <section className="border-b border-gray-100 bg-gradient-to-br from-white to-rose-50/40 px-6 py-14">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-rose-500 text-sm font-medium mb-1">Admin panel</p>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 mb-2">
+              {user.firstName} {user.lastName}
+            </h1>
+            <p className="text-gray-500 text-sm mb-6">Overview of the platform.</p>
+            <div className="flex items-center gap-4 flex-wrap mb-6">
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-gray-900">{allUsers.length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Total users</div>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-indigo-600">{courses.length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Courses</div>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-violet-600">{allUsers.filter(u => u.role === 'Lecturer').length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Lecturers</div>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 text-center shadow-sm min-w-24">
+                <div className="text-2xl font-bold text-green-600">{allUsers.filter(u => u.role === 'Student').length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Students</div>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <Link to="/admin/users" className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 text-white px-5 py-2.5 text-sm font-semibold hover:bg-indigo-500 transition-colors">
+                <Icon icon={faUsers} className="text-xs" />Manage users
+              </Link>
+              <Link to="/admin/categories" className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white text-gray-700 px-5 py-2.5 text-sm font-semibold hover:bg-gray-50 transition-colors">
+                <Icon icon={faChartLine} className="text-xs" />Categories
+              </Link>
             </div>
           </div>
         </section>
