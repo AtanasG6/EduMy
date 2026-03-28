@@ -74,7 +74,7 @@ public class CourseService : ICourseService
         await _courseRepository.AddAsync(course);
         await _courseRepository.SaveChangesAsync();
 
-        return ApiResponse<CourseDto>.Ok(MapToDto(course));
+        return ApiResponse<CourseDto>.Ok(MapToDto(course), "Course created.");
     }
 
     public async Task<ApiResponse<CourseDto>> UpdateAsync(int id, UpdateCourseRequest request)
@@ -93,7 +93,7 @@ public class CourseService : ICourseService
         _courseRepository.Update(course);
         await _courseRepository.SaveChangesAsync();
 
-        return ApiResponse<CourseDto>.Ok(MapToDto(course));
+        return ApiResponse<CourseDto>.Ok(MapToDto(course), "Course updated.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int id)
@@ -106,7 +106,7 @@ public class CourseService : ICourseService
         _courseRepository.SoftDelete(course);
         await _courseRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Course deleted.");
     }
 
     public async Task<ApiResponse> PublishAsync(int id)
@@ -123,7 +123,7 @@ public class CourseService : ICourseService
         _courseRepository.Update(course);
         await _courseRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Course published.");
     }
 
     public async Task<ApiResponse> ArchiveAsync(int id)
@@ -139,7 +139,7 @@ public class CourseService : ICourseService
         _courseRepository.Update(course);
         await _courseRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Course archived.");
     }
 
     private static CourseDto MapToDto(Course course) => new()

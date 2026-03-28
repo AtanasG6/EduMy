@@ -43,7 +43,7 @@ public class LectureService : ILectureService
         await _lectureRepository.AddAsync(lecture);
         await _lectureRepository.SaveChangesAsync();
 
-        return ApiResponse<LectureDto>.Ok(MapToDto(lecture));
+        return ApiResponse<LectureDto>.Ok(MapToDto(lecture), "Lecture created.");
     }
 
     public async Task<ApiResponse<LectureDto>> UpdateAsync(int id, LectureDto dto)
@@ -62,7 +62,7 @@ public class LectureService : ILectureService
         _lectureRepository.Update(lecture);
         await _lectureRepository.SaveChangesAsync();
 
-        return ApiResponse<LectureDto>.Ok(MapToDto(lecture));
+        return ApiResponse<LectureDto>.Ok(MapToDto(lecture), "Lecture updated.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int id)
@@ -75,7 +75,7 @@ public class LectureService : ILectureService
         _lectureRepository.Delete(lecture);
         await _lectureRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Lecture deleted.");
     }
 
     public async Task<ApiResponse> ReorderAsync(int moduleId, IEnumerable<int> orderedLectureIds)
@@ -92,7 +92,7 @@ public class LectureService : ILectureService
         }
 
         await _lectureRepository.SaveChangesAsync();
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Order updated.");
     }
 
     private static LectureDto MapToDto(Lecture lecture) => new()

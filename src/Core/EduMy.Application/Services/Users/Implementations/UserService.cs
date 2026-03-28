@@ -54,7 +54,7 @@ public class UserService : IUserService
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
 
-        return ApiResponse<UserDto>.Ok(MapToDto(user));
+        return ApiResponse<UserDto>.Ok(MapToDto(user), "Profile updated.");
     }
 
     public async Task<ApiResponse> ChangePasswordAsync(int id, ChangePasswordRequest request)
@@ -89,7 +89,7 @@ public class UserService : IUserService
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("User blocked.");
     }
 
     public async Task<ApiResponse> UnblockAsync(int id)
@@ -105,7 +105,7 @@ public class UserService : IUserService
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("User unblocked.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int id)
@@ -118,7 +118,7 @@ public class UserService : IUserService
         _userRepository.SoftDelete(user);
         await _userRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("User deleted.");
     }
 
     private static UserDto MapToDto(User user) => new()

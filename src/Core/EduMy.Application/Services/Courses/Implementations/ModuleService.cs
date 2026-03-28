@@ -37,7 +37,7 @@ public class ModuleService : IModuleService
         await _moduleRepository.AddAsync(module);
         await _moduleRepository.SaveChangesAsync();
 
-        return ApiResponse<ModuleDto>.Ok(MapToDto(module));
+        return ApiResponse<ModuleDto>.Ok(MapToDto(module), "Module created.");
     }
 
     public async Task<ApiResponse<ModuleDto>> UpdateAsync(int id, string title, string? description)
@@ -53,7 +53,7 @@ public class ModuleService : IModuleService
         _moduleRepository.Update(module);
         await _moduleRepository.SaveChangesAsync();
 
-        return ApiResponse<ModuleDto>.Ok(MapToDto(module));
+        return ApiResponse<ModuleDto>.Ok(MapToDto(module), "Module updated.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int id)
@@ -66,7 +66,7 @@ public class ModuleService : IModuleService
         _moduleRepository.Delete(module);
         await _moduleRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Module deleted.");
     }
 
     public async Task<ApiResponse> ReorderAsync(int courseId, IEnumerable<int> orderedModuleIds)

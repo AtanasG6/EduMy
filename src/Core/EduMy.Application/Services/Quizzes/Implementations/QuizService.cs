@@ -55,7 +55,7 @@ public class QuizService : IQuizService
         await _quizRepository.AddAsync(quiz);
         await _quizRepository.SaveChangesAsync();
 
-        return ApiResponse<QuizDto>.Ok(MapToDto(quiz));
+        return ApiResponse<QuizDto>.Ok(MapToDto(quiz), "Quiz created.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int quizId)
@@ -66,7 +66,7 @@ public class QuizService : IQuizService
 
         _quizRepository.Delete(quiz);
         await _quizRepository.SaveChangesAsync();
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Quiz deleted.");
     }
 
     public async Task<ApiResponse<QuestionDto>> AddQuestionAsync(int quizId, CreateQuestionRequest request)
@@ -113,7 +113,7 @@ public class QuizService : IQuizService
             Points = question.Points,
             OrderIndex = question.OrderIndex,
             Answers = loaded?.Answers?.Select(a => new AnswerDto { Id = a.Id, Text = a.Text, OrderIndex = a.OrderIndex }) ?? []
-        });
+        }, "Question added.");
     }
 
     public async Task<ApiResponse> DeleteQuestionAsync(int questionId)
@@ -124,7 +124,7 @@ public class QuizService : IQuizService
 
         _questionRepository.Delete(question);
         await _questionRepository.SaveChangesAsync();
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Question deleted.");
     }
 
     public async Task<ApiResponse<QuizAttemptDto>> SubmitAsync(int quizId, SubmitQuizRequest request)
@@ -164,7 +164,7 @@ public class QuizService : IQuizService
         await _quizAttemptRepository.AddAsync(attempt);
         await _quizAttemptRepository.SaveChangesAsync();
 
-        return ApiResponse<QuizAttemptDto>.Ok(MapAttemptToDto(attempt));
+        return ApiResponse<QuizAttemptDto>.Ok(MapAttemptToDto(attempt), "Quiz submitted.");
     }
 
     public async Task<ApiResponse<IEnumerable<QuizAttemptDto>>> GetAttemptsAsync(int enrollmentId, int quizId)

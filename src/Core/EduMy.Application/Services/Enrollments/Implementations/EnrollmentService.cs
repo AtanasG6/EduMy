@@ -59,7 +59,7 @@ public class EnrollmentService : IEnrollmentService
         await _enrollmentRepository.AddAsync(enrollment);
         await _enrollmentRepository.SaveChangesAsync();
 
-        return ApiResponse<EnrollmentDto>.Ok(MapToDto(enrollment));
+        return ApiResponse<EnrollmentDto>.Ok(MapToDto(enrollment), "Enrolled successfully.");
     }
 
     public async Task<ApiResponse> MarkLectureCompleteAsync(int enrollmentId, int lectureId, int watchTimeSeconds)
@@ -90,7 +90,7 @@ public class EnrollmentService : IEnrollmentService
         await _lectureProgressRepository.SaveChangesAsync();
         await UpdateProgressAsync(enrollmentId);
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Lecture marked as complete.");
     }
 
     public async Task<ApiResponse> UpdateProgressAsync(int enrollmentId)
@@ -120,7 +120,7 @@ public class EnrollmentService : IEnrollmentService
         _enrollmentRepository.Update(enrollment);
         await _enrollmentRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Progress updated.");
     }
 
     private static EnrollmentDto MapToDto(Enrollment enrollment) => new()

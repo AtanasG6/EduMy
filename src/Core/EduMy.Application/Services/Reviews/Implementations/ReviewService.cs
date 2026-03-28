@@ -53,7 +53,7 @@ public class ReviewService : IReviewService
         await _reviewRepository.AddAsync(review);
         await _reviewRepository.SaveChangesAsync();
 
-        return ApiResponse<ReviewDto>.Ok(MapToDto(review));
+        return ApiResponse<ReviewDto>.Ok(MapToDto(review), "Review submitted.");
     }
 
     public async Task<ApiResponse> DeleteAsync(int id)
@@ -66,7 +66,7 @@ public class ReviewService : IReviewService
         _reviewRepository.SoftDelete(review);
         await _reviewRepository.SaveChangesAsync();
 
-        return ApiResponse.Ok();
+        return ApiResponse.Ok("Review deleted.");
     }
 
     private static ReviewDto MapToDto(Review review) => new()
