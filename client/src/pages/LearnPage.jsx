@@ -121,22 +121,19 @@ export default function LearnPage() {
       <aside className="w-72 bg-white border-r border-gray-200 flex flex-col shrink-0 shadow-sm">
         {/* Header */}
         <div className="p-4 border-b border-gray-100 bg-white">
-          <Link to="/dashboard" className="flex items-center gap-1.5 text-xs text-indigo-600 hover:text-indigo-500 mb-3 font-medium">
-            <Icon icon={faArrowLeft} className="text-[10px]" />
-            Back to My Learning
-          </Link>
-          <div className="flex items-start justify-between gap-2">
-            <h2 className="font-semibold text-gray-900 text-sm line-clamp-2 leading-snug">
-              {enrollment.courseTitle}
-            </h2>
-            <Link
-              to={`/courses/${enrollment.courseId}`}
-              className="shrink-0 text-[10px] font-medium text-gray-400 hover:text-indigo-600 transition-colors mt-0.5 whitespace-nowrap"
-              title="Go to course page"
-            >
+          <div className="flex items-center gap-2 mb-3">
+            <Link to="/dashboard" className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-500 font-medium">
+              <Icon icon={faArrowLeft} className="text-[10px]" />
+              My Learning
+            </Link>
+            <span className="text-gray-300 text-xs">·</span>
+            <Link to={`/courses/${enrollment.courseId}`} className="text-xs text-gray-500 hover:text-indigo-600 font-medium transition-colors">
               Course page
             </Link>
           </div>
+          <h2 className="font-semibold text-gray-900 text-sm line-clamp-2 leading-snug">
+            {enrollment.courseTitle}
+          </h2>
 
           {totalLectures > 0 && (
             <div className="mt-3">
