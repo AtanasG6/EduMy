@@ -17,6 +17,9 @@ export default function CourseDetailPage() {
   const [error, setError] = useState('')
   const [isEnrolled, setIsEnrolled] = useState(false)
   const [enrollmentId, setEnrollmentId] = useState(null)
+  const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' })
+  const [submittingReview, setSubmittingReview] = useState(false)
+  const [reviewError, setReviewError] = useState('')
 
   useEffect(() => {
     async function load() {
@@ -42,6 +45,21 @@ export default function CourseDetailPage() {
     }
     load()
   }, [id, user])
+
+  async function handleSubmitReview(e) {
+    e.preventDefault()
+    setReviewError('')
+    setSubmittingReview(true)
+    try {
+      const res = await api.post('/reviews', { courseId: parseInt(id), ...reviewForm })
+      setReviews(prev => [res.data.data, ...prev])
+      setReviewForm({ rating: 5, comment: '' })
+    } catch (err) {
+      setReviewError(err.response?.data?.message || 'Failed to submit review.')
+    } finally {
+      setSubmittingReview(false)
+    }
+  }
 
   async function handleEnroll() {
     if (!user) { navigate('/login'); return }
@@ -142,6 +160,35 @@ export default function CourseDetailPage() {
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               Reviews {reviews.length > 0 && <span className="text-base font-normal text-gray-400">({reviews.length})</span>}
             </h2>
+
+            {isEnrolled && (
+              <form onSubmit={handleSubmitReview} className="bg-white border border-gray-200 rounded-2xl p-5 mb-5">
+                <p className="font-semibold text-gray-900 text-sm mb-3">Leave a review</p>
+                {reviewError && <p className="text-sm text-red-500 mb-3">{reviewError}</p>}
+                <div className="flex items-center gap-1 mb-3">
+                  {[1,2,3,4,5].map(s => (
+                    <button key={s} type="button" onClick={() => setReviewForm(f => ({ ...f, rating: s }))}>
+                      <Icon icon={faStar} className={`text-lg ${s <= reviewForm.rating ? 'text-amber-400' : 'text-gray-200'}`} />
+                    </button>
+                  ))}
+                </div>
+                <textarea
+                  value={reviewForm.comment}
+                  onChange={e => setReviewForm(f => ({ ...f, comment: e.target.value }))}
+                  placeholder="Share your thoughts about this course…"
+                  rows={3}
+                  className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors resize-none mb-3"
+                />
+                <button
+                  type="submit"
+                  disabled={submittingReview}
+                  className="rounded-lg bg-indigo-600 text-white px-5 py-2 text-sm font-semibold hover:bg-indigo-500 disabled:opacity-50 transition-colors"
+                >
+                  {submittingReview ? 'Submitting…' : 'Submit review'}
+                </button>
+              </form>
+            )}
+
             {reviews.length === 0 ? (
               <div className="border border-dashed border-gray-200 rounded-2xl py-10 text-center">
                 <p className="text-sm text-gray-400">No reviews yet.</p>
