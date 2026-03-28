@@ -98,7 +98,7 @@ export default function LearnPage() {
   const progressPct = totalLectures > 0 ? Math.round(completed / totalLectures * 100) : 0
 
   if (loading) return (
-    <div className="flex items-center justify-center h-[calc(100vh-57px)] bg-gray-50">
+    <div className="flex items-center justify-center h-full bg-gray-50">
       <div className="text-center">
         <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
         <p className="text-gray-400 text-sm">Loading course…</p>
@@ -116,7 +116,7 @@ export default function LearnPage() {
   )
 
   return (
-    <div className="flex h-[calc(100vh-57px)]">
+    <div className="flex h-full">
       {/* Sidebar */}
       <aside className="w-72 bg-white border-r border-gray-200 flex flex-col shrink-0 shadow-sm">
         {/* Header */}

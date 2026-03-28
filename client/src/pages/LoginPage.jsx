@@ -28,7 +28,7 @@ export default function LoginPage() {
   const inputClass = 'w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors'
 
   return (
-    <div className="h-[calc(100vh-57px)] bg-gray-50 flex items-center justify-center px-4 overflow-hidden">
+    <div className="h-full bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link to="/" className="text-xl font-bold text-gray-900 tracking-tight">

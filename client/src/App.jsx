@@ -24,8 +24,9 @@ function PrivateRoute({ children, roles }) {
 
 function AppRoutes() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
       <Navbar />
+      <div className="flex-1 overflow-y-auto">
       <Routes>
         {/* Public */}
         <Route path="/" element={<HomePage />} />
@@ -48,6 +49,7 @@ function AppRoutes() {
         <Route path="/admin/users" element={<PrivateRoute roles={['Admin']}><AdminUsersPage /></PrivateRoute>} />
         <Route path="/admin/categories" element={<PrivateRoute roles={['Admin']}><AdminCategoriesPage /></PrivateRoute>} />
       </Routes>
+      </div>
     </div>
   )
 }
