@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import api from '../api'
 import { Icon, faStar, faUsers, faSearch, faXmark } from '../icons'
@@ -16,6 +16,7 @@ export default function CoursesPage() {
   const categoryId = searchParams.get('categoryId') || ''
   const page = parseInt(searchParams.get('page') || '1')
   const pageSize = 9
+  const debounceRef = useRef(null)
 
   useEffect(() => {
     api.get('/categories').then(r => setCategories(r.data.data ?? [])).catch(() => {})
@@ -44,6 +45,13 @@ export default function CoursesPage() {
     setParam('search', searchInput)
   }
 
+  function handleSearchInput(e) {
+    const value = e.target.value
+    setSearchInput(value)
+    clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => setParam('search', value), 300)
+  }
+
   const totalPages = Math.ceil(totalCount / pageSize)
 
   return (
@@ -61,7 +69,7 @@ export default function CoursesPage() {
             type="text"
             placeholder="Search courses…"
             value={searchInput}
-            onChange={e => setSearchInput(e.target.value)}
+            onChange={handleSearchInput}
             className="rounded-lg border border-gray-200 bg-white pl-9 pr-9 py-2.5 text-sm w-60 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
           />
           {searchInput && (

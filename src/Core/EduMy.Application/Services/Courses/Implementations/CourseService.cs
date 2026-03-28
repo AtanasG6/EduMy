@@ -20,7 +20,7 @@ public class CourseService : ICourseService
     {
         var courses = await _courseRepository.FindAllAsync(c =>
             c.Status == CourseStatus.Published &&
-            (filter.Search == null || c.Title.Contains(filter.Search)) &&
+            (filter.Search == null || c.Title.ToLower().Contains(filter.Search.ToLower())) &&
             (filter.CategoryId == null || c.CategoryId == filter.CategoryId) &&
             (filter.MinPrice == null || c.Price >= filter.MinPrice) &&
             (filter.MaxPrice == null || c.Price <= filter.MaxPrice),
