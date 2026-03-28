@@ -118,7 +118,20 @@ public static class DataSeeder
             UpdatedAt = now
         };
 
-        context.Courses.AddRange(course1, course2, course3, course4);
+        var course5 = new Course
+        {
+            Title = "HTML & CSS Crash Course",
+            Description = "Build websites from scratch using HTML5 and CSS3. Learn semantic markup, layouts, flexbox, and responsive design basics.",
+            Price = 0m,
+            Status = CourseStatus.Published,
+            LecturerId = lecturer.Id,
+            CategoryId = catWeb.Id,
+            PublishedAt = now,
+            CreatedAt = now,
+            UpdatedAt = now
+        };
+
+        context.Courses.AddRange(course1, course2, course3, course4, course5);
         await context.SaveChangesAsync();
 
         // Modules & Lectures for Course 1 (C#)
@@ -169,6 +182,21 @@ public static class DataSeeder
             new Lecture { ModuleId = m8.Id, Title = "Visualizing Data with Matplotlib", OrderIndex = 2, DurationMinutes = 20, Description = "Create charts and graphs from your data.", VideoUrl = "https://www.youtube.com/embed/3Xc3CA655Y4" }
         );
 
+        // Modules & Lectures for Course 5 (HTML & CSS) — MP4 videos via Video.js
+        var m9 = new Module { CourseId = course5.Id, Title = "HTML Basics", OrderIndex = 1 };
+        var m10 = new Module { CourseId = course5.Id, Title = "CSS Fundamentals", OrderIndex = 2 };
+        context.Modules.AddRange(m9, m10);
+        await context.SaveChangesAsync();
+
+        context.Lectures.AddRange(
+            new Lecture { ModuleId = m9.Id, Title = "What is HTML?", OrderIndex = 1, DurationMinutes = 8, Description = "Introduction to HyperText Markup Language and how browsers render pages.", VideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" },
+            new Lecture { ModuleId = m9.Id, Title = "Tags, Elements, and Attributes", OrderIndex = 2, DurationMinutes = 12, Description = "Understand the building blocks of every web page.", VideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" },
+            new Lecture { ModuleId = m9.Id, Title = "Semantic HTML5", OrderIndex = 3, DurationMinutes = 15, Description = "Use header, nav, main, section, article, and footer correctly.", VideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" },
+            new Lecture { ModuleId = m10.Id, Title = "CSS Selectors and Specificity", OrderIndex = 1, DurationMinutes = 18, Description = "Target elements with class, id, attribute, and pseudo-class selectors.", VideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" },
+            new Lecture { ModuleId = m10.Id, Title = "The Box Model", OrderIndex = 2, DurationMinutes = 14, Description = "Master margin, border, padding, and content sizing.", VideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" },
+            new Lecture { ModuleId = m10.Id, Title = "Flexbox Layout", OrderIndex = 3, DurationMinutes = 20, Description = "Build one-dimensional layouts effortlessly with flexbox.", VideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" }
+        );
+
         await context.SaveChangesAsync();
 
         // Quizzes for Course 1 modules
@@ -176,7 +204,8 @@ public static class DataSeeder
         var quiz2 = new Quiz { ModuleId = m2.Id, Title = "OOP Quiz", Description = "Test your understanding of object-oriented programming.", PassingScore = 70, OrderIndex = 1 };
         var quiz3 = new Quiz { ModuleId = m4.Id, Title = "React Fundamentals Quiz", Description = "How well do you know React basics?", PassingScore = 60, OrderIndex = 1 };
         var quiz4 = new Quiz { ModuleId = m7.Id, Title = "Python Basics Quiz", Description = "Check your Python fundamentals.", PassingScore = 60, OrderIndex = 1 };
-        context.Quizzes.AddRange(quiz1, quiz2, quiz3, quiz4);
+        var quiz5 = new Quiz { ModuleId = m9.Id, Title = "HTML Basics Quiz", Description = "Test your HTML knowledge.", PassingScore = 60, OrderIndex = 1 };
+        context.Quizzes.AddRange(quiz1, quiz2, quiz3, quiz4, quiz5);
         await context.SaveChangesAsync();
 
         // Questions and Answers for quiz1
@@ -271,16 +300,37 @@ public static class DataSeeder
 
         await context.SaveChangesAsync();
 
-        // Enroll student in course 1
-        var enrollment = new Enrollment
-        {
-            StudentId = student.Id,
-            CourseId = course1.Id,
-            EnrolledAt = now,
-            ProgressPercent = 0,
-            IsCompleted = false
-        };
-        context.Enrollments.Add(enrollment);
+        // Questions for quiz5 (HTML)
+        var q12 = new Question { QuizId = quiz5.Id, Text = "What does HTML stand for?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 1 };
+        var q13 = new Question { QuizId = quiz5.Id, Text = "Which tag is used for the largest heading?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 2 };
+        var q14 = new Question { QuizId = quiz5.Id, Text = "Which HTML element defines the document body?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 3 };
+        context.Questions.AddRange(q12, q13, q14);
+        await context.SaveChangesAsync();
+
+        context.Answers.AddRange(
+            new Answer { QuestionId = q12.Id, Text = "HyperText Markup Language", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q12.Id, Text = "HyperText Management Language", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q12.Id, Text = "Home Tool Markup Language", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q12.Id, Text = "Hyperlink Text Markup Language", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q13.Id, Text = "<h1>", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q13.Id, Text = "<h6>", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q13.Id, Text = "<heading>", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q13.Id, Text = "<head>", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q14.Id, Text = "<body>", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q14.Id, Text = "<main>", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q14.Id, Text = "<content>", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q14.Id, Text = "<section>", IsCorrect = false, OrderIndex = 4 }
+        );
+
+        await context.SaveChangesAsync();
+
+        // Enroll student in course 1 and course 5
+        context.Enrollments.AddRange(
+            new Enrollment { StudentId = student.Id, CourseId = course1.Id, EnrolledAt = now, ProgressPercent = 0, IsCompleted = false },
+            new Enrollment { StudentId = student.Id, CourseId = course5.Id, EnrolledAt = now, ProgressPercent = 0, IsCompleted = false }
+        );
         await context.SaveChangesAsync();
     }
 }
