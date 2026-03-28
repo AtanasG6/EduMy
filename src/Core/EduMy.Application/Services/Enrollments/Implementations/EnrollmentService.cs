@@ -25,13 +25,13 @@ public class EnrollmentService : IEnrollmentService
 
     public async Task<ApiResponse<IEnumerable<EnrollmentDto>>> GetByStudentIdAsync(int studentId)
     {
-        var enrollments = await _enrollmentRepository.FindAllAsync(e => e.StudentId == studentId);
+        var enrollments = await _enrollmentRepository.FindAllAsync(e => e.StudentId == studentId, "Course");
         return ApiResponse<IEnumerable<EnrollmentDto>>.Ok(enrollments.Select(MapToDto));
     }
 
     public async Task<ApiResponse<EnrollmentDto>> GetByIdAsync(int id)
     {
-        var enrollment = await _enrollmentRepository.GetByIdAsync(id);
+        var enrollment = await _enrollmentRepository.GetByIdAsync(id, "Course");
 
         if (enrollment is null)
             return ApiResponse<EnrollmentDto>.Fail("Enrollment not found.");
