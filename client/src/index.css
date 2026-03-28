@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Strip VideoSkin's own border-radius — the wrapper handles it */
+.media-default-skin {
+  border-radius: 0 !important;
+  --media-border-radius: 0;
+  --media-video-border-radius: 0;
+}
+
 /* YouTube iframe fallback */
 .vp-youtube {
   position: relative;
