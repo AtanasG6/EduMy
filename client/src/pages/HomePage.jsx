@@ -26,48 +26,47 @@ export default function HomePage() {
     <div className="bg-white">
       {/* Hero — personalized if logged in */}
       {user ? (
-        <section className="bg-gradient-to-br from-indigo-600 to-violet-600 text-white px-6 py-14">
+        <section className="border-b border-gray-100 bg-gradient-to-br from-white to-indigo-50/60 px-6 py-14">
           <div className="max-w-5xl mx-auto">
-            <p className="text-indigo-200 text-sm font-medium mb-1">Welcome back</p>
-            <h1 className="text-4xl font-bold tracking-tight mb-6">
+            <p className="text-indigo-500 text-sm font-medium mb-1">Welcome back</p>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 mb-6">
               {user.firstName} {user.lastName}
             </h1>
-
             <div className="grid grid-cols-3 gap-4 max-w-sm">
-              <div className="bg-white/10 rounded-xl px-4 py-3 text-center">
-                <div className="text-2xl font-bold">{enrollments.length}</div>
-                <div className="text-xs text-indigo-200 mt-0.5">Enrolled</div>
+              <div className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-center shadow-sm">
+                <div className="text-2xl font-bold text-gray-900">{enrollments.length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Enrolled</div>
               </div>
-              <div className="bg-white/10 rounded-xl px-4 py-3 text-center">
-                <div className="text-2xl font-bold">{inProgress.length}</div>
-                <div className="text-xs text-indigo-200 mt-0.5">In progress</div>
+              <div className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-center shadow-sm">
+                <div className="text-2xl font-bold text-indigo-600">{inProgress.length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">In progress</div>
               </div>
-              <div className="bg-white/10 rounded-xl px-4 py-3 text-center">
-                <div className="text-2xl font-bold text-green-300">{completed.length}</div>
-                <div className="text-xs text-indigo-200 mt-0.5">Completed</div>
+              <div className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-center shadow-sm">
+                <div className="text-2xl font-bold text-green-600">{completed.length}</div>
+                <div className="text-xs text-gray-400 mt-0.5">Completed</div>
               </div>
             </div>
           </div>
         </section>
       ) : (
-        <section className="bg-gradient-to-br from-indigo-600 to-violet-600 text-white px-6 py-24">
+        <section className="border-b border-gray-100 bg-gradient-to-br from-white to-indigo-50/60 px-6 py-24">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-5xl font-bold tracking-tight leading-tight mb-5">
+            <h1 className="text-5xl font-bold tracking-tight leading-tight text-gray-900 mb-5">
               Learn without limits
             </h1>
-            <p className="text-lg text-indigo-100 mb-10 max-w-xl mx-auto">
+            <p className="text-lg text-gray-500 mb-10 max-w-xl mx-auto">
               Expert-led courses with video lectures, quizzes, and progress tracking — completely free to start.
             </p>
             <div className="flex justify-center gap-4">
               <Link
                 to="/courses"
-                className="inline-flex items-center gap-2 rounded-xl bg-white text-indigo-700 px-7 py-3 text-sm font-semibold shadow hover:bg-indigo-50 transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 text-white px-7 py-3 text-sm font-semibold shadow-sm hover:bg-indigo-500 transition-colors"
               >
                 Browse courses <Icon icon={faArrowRight} className="text-xs" />
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 text-white px-7 py-3 text-sm font-semibold hover:bg-white/20 transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white text-gray-700 px-7 py-3 text-sm font-semibold hover:bg-gray-50 transition-colors"
               >
                 Sign up free
               </Link>
