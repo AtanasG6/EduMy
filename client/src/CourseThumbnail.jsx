@@ -4,7 +4,15 @@ const LIGHT_BG = [
   '#eef2ff', '#f5f3ff', '#ecfdf5', '#fffbeb', '#fff1f2', '#ecfeff', '#f7fee7', '#fdf4ff',
 ]
 
-export default function CourseThumbnail({ id, title, className = 'h-44' }) {
+export default function CourseThumbnail({ id, title, src, className = 'h-44' }) {
+  if (src) {
+    return (
+      <div className={`${className} relative overflow-hidden`}>
+        <img src={src} alt={title} className="w-full h-full object-cover" />
+      </div>
+    )
+  }
+
   const idx = (id ?? 0) % LIGHT_BG.length
   const accent = getCardAccent(id)
   const bg = LIGHT_BG[idx]

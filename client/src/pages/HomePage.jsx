@@ -80,7 +80,7 @@ export default function HomePage() {
                 to={`/courses/${course.id}`}
                 className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
               >
-                <CourseThumbnail id={course.id} title={course.title} className="h-40" />
+                <CourseThumbnail id={course.id} title={course.title} src={course.coverImageUrl} className="h-40" />
                 <div className="p-5">
                   <p className="text-xs font-medium text-indigo-600 mb-1.5">{course.categoryName}</p>
                   <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors line-clamp-2 leading-snug">

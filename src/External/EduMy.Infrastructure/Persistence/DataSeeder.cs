@@ -76,6 +76,7 @@ public static class DataSeeder
             Status = CourseStatus.Published,
             LecturerId = lecturer.Id,
             CategoryId = catProgramming.Id,
+            CoverImageUrl = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&fit=crop&auto=format&q=80",
             PublishedAt = now,
             CreatedAt = now,
             UpdatedAt = now
@@ -89,6 +90,7 @@ public static class DataSeeder
             Status = CourseStatus.Published,
             LecturerId = lecturer.Id,
             CategoryId = catWeb.Id,
+            CoverImageUrl = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&fit=crop&auto=format&q=80",
             PublishedAt = now,
             CreatedAt = now,
             UpdatedAt = now
@@ -102,6 +104,7 @@ public static class DataSeeder
             Status = CourseStatus.Published,
             LecturerId = lecturer.Id,
             CategoryId = catData.Id,
+            CoverImageUrl = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&fit=crop&auto=format&q=80",
             PublishedAt = now,
             CreatedAt = now,
             UpdatedAt = now
@@ -115,6 +118,7 @@ public static class DataSeeder
             Status = CourseStatus.Draft,
             LecturerId = lecturer.Id,
             CategoryId = catDesign.Id,
+            CoverImageUrl = "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&fit=crop&auto=format&q=80",
             CreatedAt = now,
             UpdatedAt = now
         };
@@ -127,6 +131,7 @@ public static class DataSeeder
             Status = CourseStatus.Published,
             LecturerId = lecturer.Id,
             CategoryId = catWeb.Id,
+            CoverImageUrl = "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&fit=crop&auto=format&q=80",
             PublishedAt = now,
             CreatedAt = now,
             UpdatedAt = now

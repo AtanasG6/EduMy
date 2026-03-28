@@ -109,7 +109,7 @@ export default function MyCoursesPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {courses.map(course => (
             <div key={course.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-md transition-all duration-200">
-              <CourseThumbnail id={course.id} title={course.title} className="h-32" />
+              <CourseThumbnail id={course.id} title={course.title} src={course.coverImageUrl} className="h-32" />
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <h2 className="font-semibold text-gray-900 line-clamp-1 text-sm flex-1">{course.title}</h2>

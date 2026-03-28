@@ -224,7 +224,7 @@ export default function CourseDetailPage() {
         {/* Right: Enroll card */}
         <div className="lg:col-span-1">
           <div className="sticky top-6 bg-white border border-gray-200 rounded-2xl shadow-md overflow-hidden">
-            <CourseThumbnail id={course.id} title={course.title} className="h-36" />
+            <CourseThumbnail id={course.id} title={course.title} src={course.coverImageUrl} className="h-36" />
             <div className="p-6">
               <div className="text-2xl font-bold text-gray-900 mb-4">
                 {parseFloat(course.price) === 0 ? <span className="text-green-600">Free</span> : `$${course.price}`}

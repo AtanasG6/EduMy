@@ -98,7 +98,7 @@ function EnrollmentCard({ enrollment }) {
       to={`/learn/${enrollment.id}`}
       className="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
     >
-      <CourseThumbnail id={enrollment.courseId} title={enrollment.courseTitle} className="h-28" />
+      <CourseThumbnail id={enrollment.courseId} title={enrollment.courseTitle} src={enrollment.courseCoverImageUrl} className="h-28" />
       <div className="p-5">
         <div className="flex items-start justify-between gap-3 mb-4">
           <h2 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 leading-snug text-sm">
