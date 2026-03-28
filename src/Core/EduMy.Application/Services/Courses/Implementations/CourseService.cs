@@ -74,12 +74,13 @@ public class CourseService : ICourseService
         await _courseRepository.AddAsync(course);
         await _courseRepository.SaveChangesAsync();
 
-        return ApiResponse<CourseDto>.Ok(MapToDto(course), "Course created.");
+        var created = await _courseRepository.GetByIdAsync(course.Id, "Lecturer", "Category", "Enrollments", "Reviews");
+        return ApiResponse<CourseDto>.Ok(MapToDto(created!), "Course created.");
     }
 
     public async Task<ApiResponse<CourseDto>> UpdateAsync(int id, UpdateCourseRequest request)
     {
-        var course = await _courseRepository.GetByIdAsync(id);
+        var course = await _courseRepository.GetByIdAsync(id, "Lecturer", "Category", "Enrollments", "Reviews");
 
         if (course is null)
             return ApiResponse<CourseDto>.Fail("Course not found.");
