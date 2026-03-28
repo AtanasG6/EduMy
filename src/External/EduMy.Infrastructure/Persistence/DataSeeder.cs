@@ -1,5 +1,6 @@
 using EduMy.Domain.Entities.Courses;
 using EduMy.Domain.Entities.Enrollments;
+using EduMy.Domain.Entities.Quizzes;
 using EduMy.Domain.Entities.Users;
 using EduMy.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,8 @@ public static class DataSeeder
 {
     public static async Task SeedAsync(AppDbContext context)
     {
-        if (await context.Users.AnyAsync()) return;
+        bool alreadySeeded = await context.Users.AnyAsync(u => u.Email == "admin@edumy.com");
+        if (alreadySeeded) return;
 
         var now = DateTime.UtcNow;
 
@@ -127,14 +129,14 @@ public static class DataSeeder
         await context.SaveChangesAsync();
 
         context.Lectures.AddRange(
-            new Lecture { ModuleId = m1.Id, Title = "Installing .NET and Visual Studio", OrderIndex = 1, DurationMinutes = 10, Description ="In this lecture we set up the development environment." },
-            new Lecture { ModuleId = m1.Id, Title = "Your First C# Program", OrderIndex = 2, DurationMinutes = 15, Description ="We write Hello World and understand the project structure." },
-            new Lecture { ModuleId = m1.Id, Title = "Variables and Data Types", OrderIndex = 3, DurationMinutes = 20, Description ="Learn int, string, bool, double and more." },
-            new Lecture { ModuleId = m2.Id, Title = "Classes and Objects", OrderIndex = 1, DurationMinutes = 25, Description ="Introduction to object-oriented programming." },
-            new Lecture { ModuleId = m2.Id, Title = "Inheritance and Polymorphism", OrderIndex = 2, DurationMinutes = 30, Description ="Learn how to extend classes and override methods." },
-            new Lecture { ModuleId = m2.Id, Title = "Interfaces and Abstractions", OrderIndex = 3, DurationMinutes = 25, Description ="Learn interfaces, abstract classes, and design patterns." },
-            new Lecture { ModuleId = m3.Id, Title = "LINQ Basics", OrderIndex = 1, DurationMinutes = 20, Description ="Query collections with LINQ." },
-            new Lecture { ModuleId = m3.Id, Title = "Async and Await", OrderIndex = 2, DurationMinutes = 25, Description ="Write asynchronous code with async/await." }
+            new Lecture { ModuleId = m1.Id, Title = "Installing .NET and Visual Studio", OrderIndex = 1, DurationMinutes = 10, Description = "In this lecture we set up the development environment.", VideoUrl = "https://www.youtube.com/embed/G1-Zfr9-3zs" },
+            new Lecture { ModuleId = m1.Id, Title = "Your First C# Program", OrderIndex = 2, DurationMinutes = 15, Description = "We write Hello World and understand the project structure.", VideoUrl = "https://www.youtube.com/embed/gfkTfcpWqAY" },
+            new Lecture { ModuleId = m1.Id, Title = "Variables and Data Types", OrderIndex = 3, DurationMinutes = 20, Description = "Learn int, string, bool, double and more.", VideoUrl = "https://www.youtube.com/embed/0QUgvfuKvWU" },
+            new Lecture { ModuleId = m2.Id, Title = "Classes and Objects", OrderIndex = 1, DurationMinutes = 25, Description = "Introduction to object-oriented programming.", VideoUrl = "https://www.youtube.com/embed/ZqDtPFrUonQ" },
+            new Lecture { ModuleId = m2.Id, Title = "Inheritance and Polymorphism", OrderIndex = 2, DurationMinutes = 30, Description = "Learn how to extend classes and override methods.", VideoUrl = "https://www.youtube.com/embed/9F9-EvW4RPk" },
+            new Lecture { ModuleId = m2.Id, Title = "Interfaces and Abstractions", OrderIndex = 3, DurationMinutes = 25, Description = "Learn interfaces, abstract classes, and design patterns.", VideoUrl = "https://www.youtube.com/embed/A7qwuFnyIpM" },
+            new Lecture { ModuleId = m3.Id, Title = "LINQ Basics", OrderIndex = 1, DurationMinutes = 20, Description = "Query collections with LINQ.", VideoUrl = "https://www.youtube.com/embed/5l2qA3Pc83M" },
+            new Lecture { ModuleId = m3.Id, Title = "Async and Await", OrderIndex = 2, DurationMinutes = 25, Description = "Write asynchronous code with async/await.", VideoUrl = "https://www.youtube.com/embed/2moh18sh5p4" }
         );
 
         // Modules & Lectures for Course 2 (React)
@@ -145,13 +147,13 @@ public static class DataSeeder
         await context.SaveChangesAsync();
 
         context.Lectures.AddRange(
-            new Lecture { ModuleId = m4.Id, Title = "What is React?", OrderIndex = 1, DurationMinutes = 10, Description ="Overview of React and the virtual DOM." },
-            new Lecture { ModuleId = m4.Id, Title = "JSX and Components", OrderIndex = 2, DurationMinutes = 20, Description ="Create your first React components with JSX." },
-            new Lecture { ModuleId = m4.Id, Title = "Props and Data Flow", OrderIndex = 3, DurationMinutes = 15, Description ="Pass data between components using props." },
-            new Lecture { ModuleId = m5.Id, Title = "useState Hook", OrderIndex = 1, DurationMinutes = 20, Description ="Manage local component state." },
-            new Lecture { ModuleId = m5.Id, Title = "useEffect Hook", OrderIndex = 2, DurationMinutes = 20, Description ="Handle side effects and lifecycle events." },
-            new Lecture { ModuleId = m6.Id, Title = "React Router", OrderIndex = 1, DurationMinutes = 25, Description ="Add client-side routing to your app." },
-            new Lecture { ModuleId = m6.Id, Title = "Fetching Data with Axios", OrderIndex = 2, DurationMinutes = 20, Description ="Consume REST APIs from React." }
+            new Lecture { ModuleId = m4.Id, Title = "What is React?", OrderIndex = 1, DurationMinutes = 10, Description = "Overview of React and the virtual DOM.", VideoUrl = "https://www.youtube.com/embed/Tn6-PIqc4UM" },
+            new Lecture { ModuleId = m4.Id, Title = "JSX and Components", OrderIndex = 2, DurationMinutes = 20, Description = "Create your first React components with JSX.", VideoUrl = "https://www.youtube.com/embed/RVFAyFWO4go" },
+            new Lecture { ModuleId = m4.Id, Title = "Props and Data Flow", OrderIndex = 3, DurationMinutes = 15, Description = "Pass data between components using props.", VideoUrl = "https://www.youtube.com/embed/PHaECbrKgs0" },
+            new Lecture { ModuleId = m5.Id, Title = "useState Hook", OrderIndex = 1, DurationMinutes = 20, Description = "Manage local component state.", VideoUrl = "https://www.youtube.com/embed/O6P86uwfdR0" },
+            new Lecture { ModuleId = m5.Id, Title = "useEffect Hook", OrderIndex = 2, DurationMinutes = 20, Description = "Handle side effects and lifecycle events.", VideoUrl = "https://www.youtube.com/embed/0ZJgIjIuY7U" },
+            new Lecture { ModuleId = m6.Id, Title = "React Router", OrderIndex = 1, DurationMinutes = 25, Description = "Add client-side routing to your app.", VideoUrl = "https://www.youtube.com/embed/Ul3y1LXxzdU" },
+            new Lecture { ModuleId = m6.Id, Title = "Fetching Data with Axios", OrderIndex = 2, DurationMinutes = 20, Description = "Consume REST APIs from React.", VideoUrl = "https://www.youtube.com/embed/6LyagkoRWYA" }
         );
 
         // Modules & Lectures for Course 3 (Data Science)
@@ -161,10 +163,110 @@ public static class DataSeeder
         await context.SaveChangesAsync();
 
         context.Lectures.AddRange(
-            new Lecture { ModuleId = m7.Id, Title = "Python Setup and Syntax", OrderIndex = 1, DurationMinutes = 15, Description ="Install Python and write your first script." },
-            new Lecture { ModuleId = m7.Id, Title = "Lists, Dicts, and Loops", OrderIndex = 2, DurationMinutes = 20, Description ="Core Python data structures." },
-            new Lecture { ModuleId = m8.Id, Title = "Introduction to Pandas", OrderIndex = 1, DurationMinutes = 25, Description ="Load and manipulate data with pandas DataFrames." },
-            new Lecture { ModuleId = m8.Id, Title = "Visualizing Data with Matplotlib", OrderIndex = 2, DurationMinutes = 20, Description ="Create charts and graphs from your data." }
+            new Lecture { ModuleId = m7.Id, Title = "Python Setup and Syntax", OrderIndex = 1, DurationMinutes = 15, Description = "Install Python and write your first script.", VideoUrl = "https://www.youtube.com/embed/_uQrJ0TkZlc" },
+            new Lecture { ModuleId = m7.Id, Title = "Lists, Dicts, and Loops", OrderIndex = 2, DurationMinutes = 20, Description = "Core Python data structures.", VideoUrl = "https://www.youtube.com/embed/kqtD5dpn9C8" },
+            new Lecture { ModuleId = m8.Id, Title = "Introduction to Pandas", OrderIndex = 1, DurationMinutes = 25, Description = "Load and manipulate data with pandas DataFrames.", VideoUrl = "https://www.youtube.com/embed/vmEHCJofslg" },
+            new Lecture { ModuleId = m8.Id, Title = "Visualizing Data with Matplotlib", OrderIndex = 2, DurationMinutes = 20, Description = "Create charts and graphs from your data.", VideoUrl = "https://www.youtube.com/embed/3Xc3CA655Y4" }
+        );
+
+        await context.SaveChangesAsync();
+
+        // Quizzes for Course 1 modules
+        var quiz1 = new Quiz { ModuleId = m1.Id, Title = "Getting Started Quiz", Description = "Test your knowledge of the C# development environment.", PassingScore = 60, OrderIndex = 1 };
+        var quiz2 = new Quiz { ModuleId = m2.Id, Title = "OOP Quiz", Description = "Test your understanding of object-oriented programming.", PassingScore = 70, OrderIndex = 1 };
+        var quiz3 = new Quiz { ModuleId = m4.Id, Title = "React Fundamentals Quiz", Description = "How well do you know React basics?", PassingScore = 60, OrderIndex = 1 };
+        var quiz4 = new Quiz { ModuleId = m7.Id, Title = "Python Basics Quiz", Description = "Check your Python fundamentals.", PassingScore = 60, OrderIndex = 1 };
+        context.Quizzes.AddRange(quiz1, quiz2, quiz3, quiz4);
+        await context.SaveChangesAsync();
+
+        // Questions and Answers for quiz1
+        var q1 = new Question { QuizId = quiz1.Id, Text = "What command creates a new .NET console app?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 1 };
+        var q2 = new Question { QuizId = quiz1.Id, Text = "Which keyword is used to define a variable in C#?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 2 };
+        var q3 = new Question { QuizId = quiz1.Id, Text = "What is the entry point of a C# program?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 3 };
+        context.Questions.AddRange(q1, q2, q3);
+        await context.SaveChangesAsync();
+
+        context.Answers.AddRange(
+            new Answer { QuestionId = q1.Id, Text = "dotnet new console", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q1.Id, Text = "dotnet create app", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q1.Id, Text = "csharp new project", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q1.Id, Text = "new-dotnet console", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q2.Id, Text = "var or explicit type", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q2.Id, Text = "let", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q2.Id, Text = "dim", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q2.Id, Text = "define", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q3.Id, Text = "The Main method", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q3.Id, Text = "The Start method", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q3.Id, Text = "The Run method", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q3.Id, Text = "The Init method", IsCorrect = false, OrderIndex = 4 }
+        );
+
+        // Questions and Answers for quiz2 (OOP)
+        var q4 = new Question { QuizId = quiz2.Id, Text = "What does OOP stand for?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 1 };
+        var q5 = new Question { QuizId = quiz2.Id, Text = "Which keyword is used to inherit a class in C#?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 2 };
+        var q6 = new Question { QuizId = quiz2.Id, Text = "What is polymorphism?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 3 };
+        context.Questions.AddRange(q4, q5, q6);
+        await context.SaveChangesAsync();
+
+        context.Answers.AddRange(
+            new Answer { QuestionId = q4.Id, Text = "Object-Oriented Programming", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q4.Id, Text = "Object-Ordered Processing", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q4.Id, Text = "Open Object Programming", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q4.Id, Text = "Oriented Object Protocol", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q5.Id, Text = ": (colon)", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q5.Id, Text = "extends", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q5.Id, Text = "inherits", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q5.Id, Text = "base", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q6.Id, Text = "Objects of different types can be treated as the same base type", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q6.Id, Text = "A class can have multiple constructors", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q6.Id, Text = "Data is hidden inside a class", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q6.Id, Text = "A method can call itself", IsCorrect = false, OrderIndex = 4 }
+        );
+
+        // Questions and Answers for quiz3 (React)
+        var q7 = new Question { QuizId = quiz3.Id, Text = "What does JSX stand for?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 1 };
+        var q8 = new Question { QuizId = quiz3.Id, Text = "How do you pass data to a child component in React?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 2 };
+        var q9 = new Question { QuizId = quiz3.Id, Text = "What is the virtual DOM?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 3 };
+        context.Questions.AddRange(q7, q8, q9);
+        await context.SaveChangesAsync();
+
+        context.Answers.AddRange(
+            new Answer { QuestionId = q7.Id, Text = "JavaScript XML", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q7.Id, Text = "Java Syntax Extension", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q7.Id, Text = "JavaScript Extension", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q7.Id, Text = "JSON XML", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q8.Id, Text = "Using props", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q8.Id, Text = "Using state", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q8.Id, Text = "Using context only", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q8.Id, Text = "Using refs", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q9.Id, Text = "An in-memory representation of the real DOM", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q9.Id, Text = "A database for UI components", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q9.Id, Text = "A browser plugin for React", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q9.Id, Text = "A virtual machine for JavaScript", IsCorrect = false, OrderIndex = 4 }
+        );
+
+        // Questions for quiz4 (Python)
+        var q10 = new Question { QuizId = quiz4.Id, Text = "How do you print to the console in Python?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 1 };
+        var q11 = new Question { QuizId = quiz4.Id, Text = "Which of these is a Python list?", Type = QuestionType.MultipleChoice, Points = 1, OrderIndex = 2 };
+        context.Questions.AddRange(q10, q11);
+        await context.SaveChangesAsync();
+
+        context.Answers.AddRange(
+            new Answer { QuestionId = q10.Id, Text = "print('Hello')", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q10.Id, Text = "console.log('Hello')", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q10.Id, Text = "echo 'Hello'", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q10.Id, Text = "System.out.println('Hello')", IsCorrect = false, OrderIndex = 4 },
+
+            new Answer { QuestionId = q11.Id, Text = "[1, 2, 3]", IsCorrect = true, OrderIndex = 1 },
+            new Answer { QuestionId = q11.Id, Text = "{1, 2, 3}", IsCorrect = false, OrderIndex = 2 },
+            new Answer { QuestionId = q11.Id, Text = "(1, 2, 3)", IsCorrect = false, OrderIndex = 3 },
+            new Answer { QuestionId = q11.Id, Text = "<1, 2, 3>", IsCorrect = false, OrderIndex = 4 }
         );
 
         await context.SaveChangesAsync();
