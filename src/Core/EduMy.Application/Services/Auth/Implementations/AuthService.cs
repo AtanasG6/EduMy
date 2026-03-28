@@ -37,6 +37,7 @@ public class AuthService : IAuthService
 
         return ApiResponse<AuthResponse>.Ok(new AuthResponse
         {
+            Id = user.Id,
             Token = token,
             Email = user.Email,
             FirstName = user.FirstName,
@@ -52,13 +53,15 @@ public class AuthService : IAuthService
         if (exists)
             return ApiResponse<AuthResponse>.Fail("Email is already in use.");
 
+        var role = request.Role?.ToLower() == "lecturer" ? UserRole.Lecturer : UserRole.Student;
+
         var user = new User
         {
             Email = request.Email,
             PasswordHash = _passwordHasher.Hash(request.Password),
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Role = UserRole.Student,
+            Role = role,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -70,6 +73,7 @@ public class AuthService : IAuthService
 
         return ApiResponse<AuthResponse>.Ok(new AuthResponse
         {
+            Id = user.Id,
             Token = token,
             Email = user.Email,
             FirstName = user.FirstName,

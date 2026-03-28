@@ -40,6 +40,12 @@ public class CourseService : ICourseService
         });
     }
 
+    public async Task<ApiResponse<IEnumerable<CourseDto>>> GetMyAsync(int lecturerId)
+    {
+        var courses = await _courseRepository.FindAllAsync(c => c.LecturerId == lecturerId);
+        return ApiResponse<IEnumerable<CourseDto>>.Ok(courses.Select(MapToDto));
+    }
+
     public async Task<ApiResponse<CourseDto>> GetByIdAsync(int id)
     {
         var course = await _courseRepository.GetByIdAsync(id);

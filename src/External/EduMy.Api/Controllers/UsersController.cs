@@ -15,6 +15,11 @@ public class UsersController : BaseApiController
         _userService = userService;
     }
 
+    [HttpGet]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAll()
+        => ToActionResult(await _userService.GetAllAsync());
+
     [HttpGet("me")]
     public async Task<IActionResult> GetMe()
         => ToActionResult(await _userService.GetByIdAsync(CurrentUserId));

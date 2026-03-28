@@ -21,6 +21,12 @@ public class UserService : IUserService
         _passwordHasher = passwordHasher;
     }
 
+    public async Task<ApiResponse<IEnumerable<UserDto>>> GetAllAsync()
+    {
+        var users = await _userRepository.GetAllAsync();
+        return ApiResponse<IEnumerable<UserDto>>.Ok(users.Select(MapToDto));
+    }
+
     public async Task<ApiResponse<UserDto>> GetByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);

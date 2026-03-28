@@ -18,6 +18,11 @@ public class CoursesController : BaseApiController
     public async Task<IActionResult> GetAll([FromQuery] CourseFilterRequest filter)
         => ToActionResult(await _courseService.GetAllAsync(filter));
 
+    [HttpGet("my")]
+    [Authorize(Roles = "Lecturer")]
+    public async Task<IActionResult> GetMy()
+        => ToActionResult(await _courseService.GetMyAsync(CurrentUserId));
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
         => ToActionResult(await _courseService.GetByIdAsync(id));
@@ -37,12 +42,12 @@ public class CoursesController : BaseApiController
     public async Task<IActionResult> Delete(int id)
         => ToActionResult(await _courseService.DeleteAsync(id));
 
-    [HttpPut("{id}/publish")]
+    [HttpPost("{id}/publish")]
     [Authorize(Roles = "Lecturer")]
     public async Task<IActionResult> Publish(int id)
         => ToActionResult(await _courseService.PublishAsync(id));
 
-    [HttpPut("{id}/archive")]
+    [HttpPost("{id}/archive")]
     [Authorize(Roles = "Lecturer,Admin")]
     public async Task<IActionResult> Archive(int id)
         => ToActionResult(await _courseService.ArchiveAsync(id));

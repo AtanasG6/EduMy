@@ -7,10 +7,12 @@ export function AuthProvider({ children }) {
     try { return JSON.parse(localStorage.getItem('user')) } catch { return null }
   })
 
-  function login(userData, token) {
+  // authData = flat AuthResponse: { id, token, email, firstName, lastName, role }
+  function login(authData) {
+    const { token, ...userInfo } = authData
     localStorage.setItem('token', token)
-    localStorage.setItem('user', JSON.stringify(userData))
-    setUser(userData)
+    localStorage.setItem('user', JSON.stringify(userInfo))
+    setUser(userInfo)
   }
 
   function logout() {

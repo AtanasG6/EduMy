@@ -5,6 +5,7 @@ namespace EduMy.Application.Services.Users.Interfaces;
 
 public interface IUserService
 {
+    Task<ApiResponse<IEnumerable<UserDto>>> GetAllAsync();
     Task<ApiResponse<UserDto>> GetByIdAsync(int id);
     Task<ApiResponse<UserDto>> UpdateAsync(int id, UpdateUserRequest request);
     Task<ApiResponse> ChangePasswordAsync(int id, ChangePasswordRequest request);
