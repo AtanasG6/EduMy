@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api'
+import { Icon, faGraduationCap, faPlus, faPen, faTrash } from '../icons'
+import ConfirmModal from '../ConfirmModal'
 
 const STATUS_COLORS = {
   Published: 'bg-green-100 text-green-700',
@@ -11,6 +13,8 @@ const STATUS_COLORS = {
 export default function MyCoursesPage() {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
+  const [confirm, setConfirm] = useState(null) // { courseId, title }
+  const [confirmLoading, setConfirmLoading] = useState(false)
 
   useEffect(() => {
     api.get('/courses/my')
@@ -19,13 +23,17 @@ export default function MyCoursesPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  async function handleDelete(id) {
-    if (!confirm('Delete this course?')) return
+  async function handleDelete() {
+    if (!confirm) return
+    setConfirmLoading(true)
     try {
-      await api.delete(`/courses/${id}`)
-      setCourses(courses.filter(c => c.id !== id))
+      await api.delete(`/courses/${confirm.courseId}`)
+      setCourses(courses.filter(c => c.id !== confirm.courseId))
+      setConfirm(null)
     } catch {
       // ignore
+    } finally {
+      setConfirmLoading(false)
     }
   }
 
@@ -49,13 +57,25 @@ export default function MyCoursesPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
+      {confirm && (
+        <ConfirmModal
+          title="Delete course"
+          message={`Delete "${confirm.title}"? This will also remove all modules, lectures, and enrollments.`}
+          confirmLabel="Delete"
+          loading={confirmLoading}
+          onConfirm={handleDelete}
+          onClose={() => setConfirm(null)}
+        />
+      )}
+
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-gray-900">My Courses</h1>
         <Link
           to="/my-courses/new"
-          className="rounded-xl bg-indigo-600 text-white px-5 py-2.5 text-sm font-semibold hover:bg-indigo-500 transition-colors"
+          className="flex items-center gap-2 rounded-xl bg-indigo-600 text-white px-5 py-2.5 text-sm font-semibold hover:bg-indigo-500 transition-colors"
         >
-          + New course
+          <Icon icon={faPlus} />
+          New course
         </Link>
       </div>
 
@@ -67,7 +87,7 @@ export default function MyCoursesPage() {
         </div>
       ) : courses.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
-          <p className="text-4xl mb-4">🎓</p>
+          <Icon icon={faGraduationCap} className="text-5xl text-indigo-300 mb-4" />
           <p className="text-gray-500 mb-5">You haven't created any courses yet.</p>
           <Link
             to="/my-courses/new"
@@ -101,14 +121,21 @@ export default function MyCoursesPage() {
                   <td className="px-5 py-4 text-gray-500">${course.price}</td>
                   <td className="px-5 py-4 text-right">
                     <div className="flex justify-end gap-3">
-                      <Link to={`/my-courses/${course.id}/edit`} className="text-indigo-600 hover:underline">Edit</Link>
+                      <Link to={`/my-courses/${course.id}/edit`} className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-500">
+                        <Icon icon={faPen} className="text-xs" />Edit
+                      </Link>
                       {course.status === 'Draft' && (
-                        <button onClick={() => handlePublish(course.id)} className="text-green-600 hover:underline">Publish</button>
+                        <button onClick={() => handlePublish(course.id)} className="text-green-600 hover:text-green-500">Publish</button>
                       )}
                       {course.status === 'Published' && (
-                        <button onClick={() => handleArchive(course.id)} className="text-yellow-600 hover:underline">Archive</button>
+                        <button onClick={() => handleArchive(course.id)} className="text-yellow-600 hover:text-yellow-500">Archive</button>
                       )}
-                      <button onClick={() => handleDelete(course.id)} className="text-red-500 hover:underline">Delete</button>
+                      <button
+                        onClick={() => setConfirm({ courseId: course.id, title: course.title })}
+                        className="flex items-center gap-1.5 text-red-500 hover:text-red-400"
+                      >
+                        <Icon icon={faTrash} className="text-xs" />Delete
+                      </button>
                     </div>
                   </td>
                 </tr>

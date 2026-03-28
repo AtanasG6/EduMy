@@ -1,0 +1,71 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faBook,
+  faGraduationCap,
+  faUser,
+  faUsers,
+  faStar,
+  faClock,
+  faMobileScreen,
+  faPlay,
+  faFileAlt,
+  faCircleQuestion,
+  faChartLine,
+  faSearch,
+  faPlus,
+  faPen,
+  faTrash,
+  faCheck,
+  faLock,
+  faUnlock,
+  faXmark,
+  faArrowLeft,
+  faUpload,
+  faVideo,
+  faClipboardList,
+  faHouse,
+  faBars,
+  faBell,
+  faEnvelope,
+  faCircleCheck,
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  faStar as faStarOutline,
+} from '@fortawesome/free-regular-svg-icons'
+
+// Convenience wrapper so we don't repeat className everywhere
+export function Icon({ icon, className = '', ...props }) {
+  return <FontAwesomeIcon icon={icon} className={className} {...props} />
+}
+
+export {
+  faBook,
+  faGraduationCap,
+  faUser,
+  faUsers,
+  faStar,
+  faStarOutline,
+  faClock,
+  faMobileScreen,
+  faPlay,
+  faFileAlt,
+  faCircleQuestion,
+  faChartLine,
+  faSearch,
+  faPlus,
+  faPen,
+  faTrash,
+  faCheck,
+  faLock,
+  faUnlock,
+  faXmark,
+  faArrowLeft,
+  faUpload,
+  faVideo,
+  faClipboardList,
+  faHouse,
+  faBars,
+  faBell,
+  faEnvelope,
+  faCircleCheck,
+}

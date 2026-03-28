@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
+import { Icon, faBook, faCircleCheck } from '../icons'
 
 export default function DashboardPage() {
   const { user } = useAuth()
@@ -33,7 +34,7 @@ export default function DashboardPage() {
         </div>
       ) : enrollments.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
-          <p className="text-4xl mb-4">📚</p>
+          <Icon icon={faBook} className="text-5xl text-indigo-300 mb-4" />
           <p className="text-gray-500 mb-5">You haven't enrolled in any courses yet.</p>
           <Link
             to="/courses"
@@ -51,8 +52,8 @@ export default function DashboardPage() {
               className="group bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center text-2xl shrink-0">
-                  📚
+                <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center shrink-0">
+                  <Icon icon={faBook} className="text-xl text-indigo-500" />
                 </div>
                 <div className="min-w-0">
                   <h2 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2">

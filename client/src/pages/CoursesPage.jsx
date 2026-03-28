@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import api from '../api'
+import { Icon, faBook, faStar, faUsers } from '../icons'
 
 export default function CoursesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -91,7 +92,7 @@ export default function CoursesPage() {
                 className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
               >
                 <div className="h-40 bg-gradient-to-br from-indigo-50 to-violet-50 flex items-center justify-center">
-                  <span className="text-5xl">📚</span>
+                  <Icon icon={faBook} className="text-5xl text-indigo-300" />
                 </div>
                 <div className="p-5">
                   <p className="text-xs font-medium text-indigo-600 mb-1">{course.categoryName}</p>
@@ -102,7 +103,7 @@ export default function CoursesPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-gray-900">${course.price}</span>
                     <div className="flex items-center gap-2 text-xs text-gray-400">
-                      {course.averageRating > 0 && <span>⭐ {course.averageRating.toFixed(1)}</span>}
+                      {course.averageRating > 0 && <span><Icon icon={faStar} className="text-amber-400 mr-0.5" />{course.averageRating.toFixed(1)}</span>}
                       <span>{course.enrollmentCount} students</span>
                     </div>
                   </div>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../AuthContext'
+import { Icon, faSearch, faCheck, faXmark } from '../icons'
 
 export default function RegisterPage() {
   const { login } = useAuth()
@@ -136,9 +137,9 @@ export default function RegisterPage() {
                   required
                   className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
                 />
-                {diplomaStatus === 'checking' && <p className="mt-2 text-xs text-gray-500">🔍 Verifying with AI…</p>}
-                {diplomaStatus === 'ok' && <p className="mt-2 text-xs text-green-600 font-medium">✓ Diploma verified</p>}
-                {diplomaStatus === 'fail' && <p className="mt-2 text-xs text-red-500">✗ Could not verify — try a clearer image</p>}
+                {diplomaStatus === 'checking' && <p className="mt-2 text-xs text-gray-500"><Icon icon={faSearch} className="mr-1" />Verifying with AI…</p>}
+                {diplomaStatus === 'ok' && <p className="mt-2 text-xs text-green-600 font-medium"><Icon icon={faCheck} className="mr-1" />Diploma verified</p>}
+                {diplomaStatus === 'fail' && <p className="mt-2 text-xs text-red-500"><Icon icon={faXmark} className="mr-1" />Could not verify — try a clearer image</p>}
               </div>
             )}
 

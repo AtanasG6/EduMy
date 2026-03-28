@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import api from '../api'
+import { Icon, faBook, faUsers } from '../icons'
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -76,7 +77,7 @@ export default function HomePage() {
                 className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
               >
                 <div className="h-40 bg-gradient-to-br from-indigo-100 to-violet-100 flex items-center justify-center">
-                  <span className="text-5xl">📚</span>
+                  <Icon icon={faBook} className="text-5xl text-indigo-400" />
                 </div>
                 <div className="p-5">
                   <p className="text-xs font-medium text-indigo-600 mb-1">{course.categoryName}</p>
