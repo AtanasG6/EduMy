@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import api from '../api'
 import { Icon, faCheck, faCircleQuestion, faClock, faPlay, faArrowLeft, faTrophy, faLayerGroup } from '../icons'
+import VideoPlayer from '../VideoPlayer'
 
 export default function LearnPage() {
   const { enrollmentId } = useParams()
@@ -232,18 +233,12 @@ export default function LearnPage() {
             )}
 
             {activeItem.data.videoUrl ? (
-              <div className="aspect-video bg-gray-900 rounded-2xl mb-8 overflow-hidden shadow-lg">
-                <iframe
-                  src={activeItem.data.videoUrl}
-                  className="w-full h-full"
-                  allowFullScreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title={activeItem.data.title}
-                />
+              <div className="rounded-2xl mb-8 overflow-hidden shadow-md">
+                <VideoPlayer src={activeItem.data.videoUrl} />
               </div>
             ) : (
-              <div className="aspect-video bg-gray-900 rounded-2xl mb-8 flex items-center justify-center">
-                <div className="text-center text-gray-600">
+              <div className="aspect-video bg-gray-100 rounded-2xl mb-8 flex items-center justify-center">
+                <div className="text-center text-gray-400">
                   <Icon icon={faPlay} className="text-3xl mb-2" />
                   <p className="text-sm">No video available</p>
                 </div>
