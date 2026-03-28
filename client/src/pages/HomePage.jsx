@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import api from '../api'
-import { Icon, faArrowRight, faPlay, faBook, faGraduationCap } from '../icons'
+import { Icon, faArrowRight, faPlay, faBook, faGraduationCap, faStar } from '../icons'
 import CourseThumbnail from '../CourseThumbnail'
 
 export default function HomePage() {
@@ -91,7 +91,15 @@ export default function HomePage() {
                     <span className="text-base font-bold text-gray-900">
                       {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
                     </span>
-                    <span className="text-xs text-gray-400">{course.enrollmentCount} students</span>
+                    <div className="flex items-center gap-3 text-xs text-gray-400">
+                      {course.averageRating > 0 && (
+                        <span className="flex items-center gap-1">
+                          <Icon icon={faStar} className="text-amber-400 text-[10px]" />
+                          {course.averageRating.toFixed(1)}
+                        </span>
+                      )}
+                      <span>{course.enrollmentCount} students</span>
+                    </div>
                   </div>
                 </div>
               </Link>
