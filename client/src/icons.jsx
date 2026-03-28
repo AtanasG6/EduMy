@@ -35,6 +35,7 @@ import {
   faChevronDown,
   faTag,
   faInfinity,
+  faFire,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faStar as faStarOutline,
@@ -82,4 +83,5 @@ export {
   faChevronDown,
   faTag,
   faInfinity,
+  faFire,
 }
